@@ -42,12 +42,15 @@ export default {
     font-size: 20px;
     line-height: 50px;
     background-color: #409eff;
+    color: #ecf5ff;
+    border-bottom: 1px solid #dcdfe6;
     h3 {
       margin: 0;
       margin-left: 15px;
     }
   }
   .container {
+    position: relative;
     display: flex;
     height: calc(100% - 50px);
     .leftAside {
