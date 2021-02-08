@@ -38,7 +38,7 @@ export default {
       };
       window.onmouseup = () => {
         console.log(3);
-        window.onmousemove = null;
+        window.onmousemove = window.onmouseup = null;
         if (this.show) {
           this.show = false;
           this.mousemoveflag = false;
