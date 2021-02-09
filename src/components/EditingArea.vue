@@ -9,6 +9,7 @@
 
 <script>
 import Radio from "./FormComponents/Radio.vue";
+
 export default {
   name: "EditingArea",
   data() {

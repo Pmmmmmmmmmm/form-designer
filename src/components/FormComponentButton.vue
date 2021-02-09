@@ -3,7 +3,7 @@
     <el-button @mousedown.native="drag($event)">
       <slot name="title"></slot>
       <div class="example" v-show="show">
-        <div class="style">
+        <div class="style" ref="dragTarget">
           <slot name="example"></slot>
         </div>
       </div>
@@ -23,26 +23,28 @@ export default {
   methods: {
     drag(eo) {
       console.log(1);
-      let div = document.querySelector(".style");
+      let dragTarget = this.$refs.dragTarget;
+      console.log(this.$refs);
+      console.log();
       let x = eo.clientX;
       let y = eo.clientY;
-      div.style.left = x + "px";
-      div.style.top = y - 50 + "px";
+      dragTarget.style.left = x + "px";
+      dragTarget.style.top = y - 50 + "px";
       this.show = true;
       window.onmousemove = (e) => {
         console.log(2);
         x = e.clientX;
         y = e.clientY;
-        div.style.left = x + "px";
-        div.style.top = y - 50 + "px";
+        dragTarget.style.left = x + "px";
+        dragTarget.style.top = y - 50 + "px";
       };
       window.onmouseup = () => {
         console.log(3);
-        window.onmousemove = window.onmouseup = null;
         if (this.show) {
           this.show = false;
           this.mousemoveflag = false;
         }
+        window.onmousemove = window.onmouseup = null;
       };
     },
   },
