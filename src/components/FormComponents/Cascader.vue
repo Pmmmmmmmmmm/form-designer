@@ -1,7 +1,6 @@
 <template>
   <div class="Cascader">
     <div class="block">
-      <p class="demonstration">鼠标经过触发子菜单</p>
       <el-cascader
         v-model="value"
         :options="options"

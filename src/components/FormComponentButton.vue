@@ -20,26 +20,27 @@ export default {
     };
   },
   components: {},
+  props: ["item", "mouseChangeFlag"],
   methods: {
     drag(eo) {
-      console.log(1);
       let dragTarget = this.$refs.dragTarget;
-      console.log(this.$refs);
-      console.log();
       let x = eo.clientX;
       let y = eo.clientY;
       dragTarget.style.left = x + "px";
       dragTarget.style.top = y - 50 + "px";
       this.show = true;
       window.onmousemove = (e) => {
-        console.log(2);
+        if (this.mouseChangeFlag == "in") {
+        }
         x = e.clientX;
         y = e.clientY;
         dragTarget.style.left = x + "px";
         dragTarget.style.top = y - 50 + "px";
       };
       window.onmouseup = () => {
-        console.log(3);
+        if (this.mouseChangeFlag == "in") {
+          this.$emit("emitbtnid", this.item);
+        }
         if (this.show) {
           this.show = false;
           this.mousemoveflag = false;

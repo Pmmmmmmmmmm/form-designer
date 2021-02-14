@@ -2,72 +2,22 @@
   <div class="ComponentSelectionArea">
     <div class="basic">
       <h4>基础表单组件</h4>
-      <FormComponentButton>
-        <span slot="title">单选框</span>
-        <div slot="example">
-          <Radio />
-        </div>
-      </FormComponentButton>
-      <FormComponentButton>
-        <span slot="title">多选框</span>
-        <div slot="example">
-          <Checkbox />
-        </div>
-      </FormComponentButton>
-      <FormComponentButton>
-        <span slot="title">输入框</span>
-        <div slot="example">
-          <Input />
-        </div>
-      </FormComponentButton>
-      <FormComponentButton>
-        <span slot="title">计数器</span>
-        <div slot="example">
-          <InputNumber />
-        </div>
-      </FormComponentButton>
-      <FormComponentButton>
-        <span slot="title">选择器</span>
-        <div slot="example">
-          <Select />
-        </div>
-      </FormComponentButton>
-      <FormComponentButton>
-        <span slot="title">级联选择器</span>
-        <div slot="example">
-          <Cascader />
-        </div>
-      </FormComponentButton>
-      <FormComponentButton>
-        <span slot="title">开关</span>
-        <div slot="example">
-          <Formswitch />
-        </div>
-      </FormComponentButton>
-      <FormComponentButton>
-        <span slot="title">滑块</span>
-        <div slot="example">
-          <Slider />
-        </div>
-      </FormComponentButton>
-      <FormComponentButton>
-        <span slot="title">时间选择</span>
-        <div slot="example">
-          <TimePicker />
-        </div>
-      </FormComponentButton>
-      <FormComponentButton>
-        <span slot="title">日期选择</span>
-        <div slot="example">
-          <DatePicker />
-        </div>
+      <FormComponentButton
+        v-for="(item, index) in ButtonData"
+        :key="index"
+        :item="item"
+        v-bind="$attrs"
+        v-on="$listeners"
+      >
+        <span slot="title">{{ item.name }} </span>
+        <div slot="example" :is="item.id"></div>
       </FormComponentButton>
     </div>
   </div>
 </template>
 
 <script>
-import Cascader from "./Cascader.vue";
+import Cascader from "./FormComponents/Cascader.vue";
 import FormComponentButton from "./FormComponentButton";
 import Checkbox from "./FormComponents/Checkbox.vue";
 import DatePicker from "./FormComponents/DatePicker.vue";
@@ -81,8 +31,22 @@ import TimePicker from "./FormComponents/TimePicker.vue";
 export default {
   name: "ComponentSelectionArea",
   data() {
-    return {};
+    return {
+      ButtonData: [
+        { name: "单选框", id: "Radio" },
+        { name: "多选框", id: "Checkbox" },
+        { name: "输入框", id: "Input" },
+        { name: "计数器", id: "InputNumber" },
+        { name: "选择器", id: "Select" },
+        { name: "级联选择器", id: "Cascader" },
+        { name: "开关", id: "Formswitch" },
+        { name: "滑块", id: "Slider" },
+        { name: "时间选择", id: "TimePicker" },
+        { name: "日期选择", id: "DatePicker" },
+      ],
+    };
   },
+  props: [],
   components: {
     FormComponentButton,
     Radio,

@@ -4,8 +4,18 @@
       <h3>Form Designer</h3>
     </header>
     <div class="container">
-      <div class="leftAside"><ComponentSelectionArea /></div>
-      <div class="main"><EditingArea /></div>
+      <div class="leftAside">
+        <ComponentSelectionArea
+          @emitbtnid="changeCurrentComponent"
+          :mouseChangeFlag="mouseChangeFlag"
+        />
+      </div>
+      <div class="main">
+        <EditingArea
+          @mouseover.native="changeActive($event)"
+          @mouseout.native="removeActive($event)"
+        />
+      </div>
       <div class="rightAside"><AttributeModificationArea /></div>
     </div>
   </div>
@@ -20,10 +30,28 @@ import Radio from "./components/FormComponents/Radio.vue";
 //引入表单组件
 export default {
   name: "app",
+  data() {
+    return {
+      mouseChangeFlag: "",
+      // currentlySelected: "",
+    };
+  },
   components: {
     ComponentSelectionArea,
     EditingArea,
     AttributeModificationArea,
+  },
+  methods: {
+    changeCurrentComponent(item) {
+      this.currentlySelected = item.id;
+      this.$children[1].$children[0].items.push(this.currentlySelected);
+    },
+    changeActive() {
+      this.mouseChangeFlag = "in";
+    },
+    removeActive() {
+      this.mouseChangeFlag = "out";
+    },
   },
 };
 </script>

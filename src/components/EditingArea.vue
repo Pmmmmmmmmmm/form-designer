@@ -1,21 +1,18 @@
 <template>
   <div class="EditingArea">
-    <Radio />
-    <Radio />
-    <Radio />
-    <Radio />
+    <dragging-container />
   </div>
 </template>
 
 <script>
-import Radio from "./FormComponents/Radio.vue";
+import DraggingContainer from "./DraggingModel/DraggingContainer.vue";
 
 export default {
   name: "EditingArea",
   data() {
     return {};
   },
-  components: { Radio },
+  components: { DraggingContainer },
   created() {},
   mounted() {},
   methods: {},
@@ -27,7 +24,7 @@ export default {
   display: flex;
   flex-direction: column;
   margin: 10px;
-  padding: 10px 0 10px 10px;
+  padding: 0 0 10px 10px;
   height: calc(100% - 40px);
   overflow-y: scroll;
   border: 1px solid #dcdfe6;
