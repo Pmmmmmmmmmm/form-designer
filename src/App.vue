@@ -6,14 +6,14 @@
     <div class="container">
       <div class="leftAside">
         <ComponentSelectionArea
-          @emitbtnid="changeCurrentComponent"
           :mouseChangeFlag="mouseChangeFlag"
+          @emitbtnid="pushComponents"
         />
       </div>
       <div class="main">
         <EditingArea
-          @mouseover.native="changeActive($event)"
-          @mouseout.native="removeActive($event)"
+          @mouseover.native="mouseover"
+          @mouseout.native="mouseout"
         />
       </div>
       <div class="rightAside"><AttributeModificationArea /></div>
@@ -26,14 +26,12 @@
 import ComponentSelectionArea from "./components/ComponentSelectionArea";
 import EditingArea from "./components/EditingArea";
 import AttributeModificationArea from "./components/AttributeModificationArea";
-import Radio from "./components/FormComponents/Radio.vue";
 //引入表单组件
 export default {
   name: "app",
   data() {
     return {
-      mouseChangeFlag: "",
-      // currentlySelected: "",
+      mouseChangeFlag: false,
     };
   },
   components: {
@@ -42,15 +40,14 @@ export default {
     AttributeModificationArea,
   },
   methods: {
-    changeCurrentComponent(item) {
-      this.currentlySelected = item.id;
-      this.$children[1].$children[0].items.push(this.currentlySelected);
+    mouseover() {
+      this.mouseChangeFlag = true;
     },
-    changeActive() {
-      this.mouseChangeFlag = "in";
+    mouseout() {
+      this.mouseChangeFlag = false;
     },
-    removeActive() {
-      this.mouseChangeFlag = "out";
+    pushComponents(item) {
+      this.$children[1].listdata.push(item);
     },
   },
 };
@@ -80,17 +77,17 @@ export default {
   .container {
     position: relative;
     display: flex;
-    height: calc(100% - 50px);
+    height: calc(100% - 40px);
     .leftAside {
       width: 280px;
     }
     .main {
+      min-width: 500px;
       flex: 1;
       background-color: #ecf5ff;
     }
     .rightAside {
       width: 300px;
-      background-color: cornflowerblue;
     }
   }
 }

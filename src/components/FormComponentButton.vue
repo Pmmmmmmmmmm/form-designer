@@ -30,15 +30,13 @@ export default {
       dragTarget.style.top = y - 50 + "px";
       this.show = true;
       window.onmousemove = (e) => {
-        if (this.mouseChangeFlag == "in") {
-        }
         x = e.clientX;
         y = e.clientY;
         dragTarget.style.left = x + "px";
         dragTarget.style.top = y - 50 + "px";
       };
       window.onmouseup = () => {
-        if (this.mouseChangeFlag == "in") {
+        if (this.mouseChangeFlag) {
           this.$emit("emitbtnid", this.item);
         }
         if (this.show) {

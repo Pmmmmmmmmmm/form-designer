@@ -15,6 +15,11 @@ export default {
       radio: 3,
     };
   },
+  methods: {
+    test() {
+      this.radio = 6;
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
