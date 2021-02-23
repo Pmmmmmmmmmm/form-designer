@@ -1,6 +1,6 @@
 <template>
   <div class="Formswitch">
-    <el-switch v-model="value" active-color="#13ce66" inactive-color="#ff4949">
+    <el-switch v-model="value" active-color="#409eff" inactive-color="#c6e2ff">
     </el-switch>
   </div>
 </template>

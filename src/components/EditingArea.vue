@@ -7,7 +7,7 @@
       v-bind="options()"
     >
       <li v-for="(item, index) in listdata" :key="index" class="FCC">
-        <div :is="item.id" ref="itemid"></div>
+        <form-components :componentid="item" :index="index" />
         <div class="toolbar">
           <el-button
             type="primary"
@@ -27,6 +27,7 @@
 
 <script>
 import draggable from "vuedraggable";
+import FormComponents from "./FormComponents.vue";
 import Cascader from "./FormComponents/Cascader.vue";
 import Checkbox from "./FormComponents/Checkbox.vue";
 import DatePicker from "./FormComponents/DatePicker.vue";
@@ -70,6 +71,7 @@ export default {
     Slider,
     TimePicker,
     DatePicker,
+    FormComponents,
   },
   props: ["item"],
   created() {},
@@ -83,20 +85,17 @@ export default {
         disabled: false, // false可拖拽，true不可拖拽
         // group: "description",
         chosenClass: "sortable-chosen", // 设置被选中的元素的class
+        ghostClass: "ghost",
       };
     },
     del(index) {
       this.listdata.splice(index, 1);
     },
-    setting(index) {
-      // console.log(this.$refs);
-    },
+    setting(index) {},
   },
   watch: {
-    listdata: function (newVal, oldVal) {
-      // TO DO
-      console.log("newVal:", newVal);
-      console.log("oldVal:", oldVal);
+    listdata: function (newVal) {
+      // console.log("newVal:", newVal);
     },
   },
 };
@@ -125,7 +124,7 @@ export default {
       padding: 10px;
       background: #ecf5ff;
       border: 2px dashed #909399;
-      border-collapse: collapse;
+
       border-radius: 2px;
       margin-bottom: 5px;
       -webkit-user-select: none;
@@ -137,6 +136,9 @@ export default {
       }
       .sortable-chosen {
         border: solid 2px #3089dc !important;
+      }
+      .ghost {
+        display: none;
       }
       .toolbar {
         position: absolute;

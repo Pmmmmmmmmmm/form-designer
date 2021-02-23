@@ -47,7 +47,7 @@ export default {
       this.mouseChangeFlag = false;
     },
     pushComponents(item) {
-      this.$children[1].listdata.push(item);
+      this.$children[1].listdata.push(item.id);
     },
   },
 };
