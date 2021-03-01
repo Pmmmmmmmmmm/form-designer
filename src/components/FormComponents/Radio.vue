@@ -1,6 +1,7 @@
 <template>
   <div class="Radio">
     <el-radio-group v-model="radio">
+      <button @click="test()" lable="aaa"></button>
       <el-radio :label="3">备选项</el-radio>
       <el-radio :label="6">备选项</el-radio>
       <el-radio :label="9">备选项</el-radio>
@@ -10,6 +11,7 @@
 <script>
 export default {
   name: "Radio",
+  props:['item','index'],
   data() {
     return {
       radio: 3,
@@ -17,7 +19,7 @@ export default {
   },
   methods: {
     test() {
-      this.radio = 6;
+      console.log(this.index);
     },
   },
 };

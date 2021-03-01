@@ -1,29 +1,22 @@
 <template>
   <div class="EditingArea">
-    <draggable
-      tag="ul"
-      v-model="listdata"
-      class="ul-draggable"
-      v-bind="options()"
-    >
+    <draggable tag="ul" v-model="listdata" class="ul-draggable" v-bind="options()" @update="datadragEnd">
       <li v-for="(item, index) in listdata" :key="index" class="FCC">
-        <form-components :componentid="item" :index="index" />
+        <component :is="item.id" :item="item" :index="index"></component>
         <div class="toolbar">
-          <el-button
-            type="primary"
-            icon="el-icon-setting"
-            @click.stop="setting(index)"
-          ></el-button>
-          <el-button
-            type="danger"
-            icon="el-icon-delete"
-            @click.stop="del(index)"
-          ></el-button>
+          <el-button type="primary" icon="el-icon-setting" @click.stop="setting(index)"></el-button>
+          <template>
+            <el-popconfirm title="确定删除此项吗？" @confirm="confirm(index)">
+              <el-button type="danger" slot="reference" icon="el-icon-delete"></el-button>
+            </el-popconfirm>
+          </template>
         </div>
       </li>
     </draggable>
   </div>
 </template>
+
+
 
 <script>
 import draggable from "vuedraggable";
@@ -42,21 +35,7 @@ export default {
   name: "EditingArea",
   data() {
     return {
-      componentsdata: [
-        draggable,
-        Radio,
-        Checkbox,
-        Input,
-        InputNumber,
-        Select,
-        Cascader,
-        Formswitch,
-        Slider,
-        TimePicker,
-        DatePicker,
-      ],
-      listdata: [],
-      binddata: [],
+      listdata: [], //渲染拖拽组件
     };
   },
   components: {
@@ -74,7 +53,7 @@ export default {
     FormComponents,
   },
   props: ["item"],
-  created() {},
+  created() { },
   updated() {},
   computed: {},
   mounted() {},
@@ -88,10 +67,17 @@ export default {
         ghostClass: "ghost",
       };
     },
-    del(index) {
-      this.listdata.splice(index, 1);
-    },
+
+    //设置选中项
     setting(index) {},
+    //拖动结束
+    datadragEnd(){
+      console.log(this.listdata);
+    },
+    //移除选中项
+    confirm(index){
+     this.listdata.splice(index, 1);
+    }
   },
   watch: {
     listdata: function (newVal) {

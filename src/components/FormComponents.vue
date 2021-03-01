@@ -1,7 +1,8 @@
 <template>
   <div class="FormComponents">
     <!-- 单选框 -->
-    <div v-if="componentid == 'Radio'">
+    <div v-if="item.id == 'Radio'">
+      <p @click="test()">1</p>
       <el-radio-group v-model="radio">
         <el-radio :label="3">备选项</el-radio>
         <el-radio :label="6">备选项</el-radio>
@@ -9,7 +10,8 @@
       </el-radio-group>
     </div>
     <!-- 多选框 -->
-    <div v-if="componentid == 'Checkbox'">
+    <div v-if="item.id == 'Checkbox'">
+      <p @click="test()">2</p>
       <el-checkbox-group v-model="checkList">
         <el-checkbox label="复选框 A"></el-checkbox>
         <el-checkbox label="复选框 B"></el-checkbox>
@@ -17,53 +19,33 @@
       </el-checkbox-group>
     </div>
     <!-- 输入框 -->
-    <div v-if="componentid == 'Input'">
+    <div v-if="item.id == 'Input'">
       <el-input v-model="input" placeholder="请输入内容"></el-input>
     </div>
     <!-- 计数器 -->
-    <div v-if="componentid == 'InputNumber'">
-      <el-input-number
-        v-model="num"
-        :min="1"
-        :max="10"
-        label="描述文字"
-      ></el-input-number>
+    <div v-if="item.id == 'InputNumber'">
+      <el-input-number v-model="num" :min="1" :max="10" label="描述文字"></el-input-number>
     </div>
     <!-- 选择器 -->
-    <div v-if="componentid == 'Select'">
+    <div v-if="item.id == 'Select'">
       <el-select v-model="selectvalue" placeholder="请选择">
-        <el-option
-          v-for="item in selectoptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
+        <el-option v-for="item in selectoptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
       </el-select>
     </div>
     <!-- 级联选择器 -->
-    <div v-if="componentid == 'Cascader'">
-      <el-cascader
-        v-model="Cascadervalue"
-        :options="Cascaderoptions"
-        :props="{ expandTrigger: 'hover' }"
-      ></el-cascader>
+    <div v-if="item.id == 'Cascader'">
+      <el-cascader v-model="Cascadervalue" :options="Cascaderoptions" :props="{ expandTrigger: 'hover' }"></el-cascader>
     </div>
     <!-- 开关 -->
-    <div v-if="componentid == 'Formswitch'">
-      <el-switch
-        v-model="Formswitchvalue"
-        active-color="#409eff"
-        inactive-color="#c6e2ff"
-      >
-      </el-switch>
+    <div v-if="item.id == 'Formswitch'">
+      <el-switch v-model="Formswitchvalue" active-color="#409eff" inactive-color="#c6e2ff"></el-switch>
     </div>
     <!-- 滑块 -->
-    <div v-if="componentid == 'Slider'">
+    <div v-if="item.id == 'Slider'">
       <el-slider v-model="Slidervalue" style="min-width: 200px"></el-slider>
     </div>
     <!-- 时间选择器 -->
-    <div v-if="componentid == 'TimePicker'">
+    <div v-if="item.id == 'TimePicker'">
       <el-time-select
         v-model="TimePickerValue"
         :picker-options="{
@@ -72,18 +54,11 @@
           end: '18:30',
         }"
         placeholder="选择时间"
-      >
-      </el-time-select>
+      ></el-time-select>
     </div>
     <!-- 日期选择器 -->
-    <div v-if="componentid == 'DatePicker'">
-      <el-date-picker
-        v-model="DatePickerValue"
-        type="date"
-        placeholder="选择日期"
-        :picker-options="pickerOptions"
-      >
-      </el-date-picker>
+    <div v-if="item.id == 'DatePicker'">
+      <el-date-picker v-model="DatePickerValue" type="date" placeholder="选择日期" :picker-options="pickerOptions"></el-date-picker>
     </div>
   </div>
 </template>
@@ -91,7 +66,7 @@
 <script>
 export default {
   name: "FormComponents",
-  props: ["componentid", "index"],
+  props: ["item", "index"],
   data() {
     return {
       //单选
@@ -438,9 +413,9 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    c() {
-      console.log(this.componentid, this.index);
-    },
+   test(){
+     console.log(this.item);
+   }
   },
 };
 </script>

@@ -5,18 +5,14 @@
     </header>
     <div class="container">
       <div class="leftAside">
-        <ComponentSelectionArea
-          :mouseChangeFlag="mouseChangeFlag"
-          @emitbtnid="pushComponents"
-        />
+        <ComponentSelectionArea :mouseChangeFlag="mouseChangeFlag" @emitbtnid="pushComponents" />
       </div>
       <div class="main">
-        <EditingArea
-          @mouseover.native="mouseover"
-          @mouseout.native="mouseout"
-        />
+        <EditingArea @mouseover.native="mouseover" @mouseout.native="mouseout" />
       </div>
-      <div class="rightAside"><AttributeModificationArea /></div>
+      <div class="rightAside">
+        <AttributeModificationArea />
+      </div>
     </div>
   </div>
 </template>
@@ -47,7 +43,13 @@ export default {
       this.mouseChangeFlag = false;
     },
     pushComponents(item) {
-      this.$children[1].listdata.push(item.id);
+      this.$children[1].listdata.push(
+        {
+          id:item.id,
+          settingOptions:{
+            value:'pm'
+          }
+        });
     },
   },
 };
@@ -58,8 +60,7 @@ export default {
   position: fixed;
   width: 100vw;
   height: 100%;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   header {
