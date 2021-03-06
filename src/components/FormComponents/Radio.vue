@@ -1,27 +1,32 @@
 <template>
   <div class="Radio">
     <el-radio-group v-model="radio">
-      <button @click="test()" lable="aaa"></button>
-      <el-radio :label="3">备选项</el-radio>
-      <el-radio :label="6">备选项</el-radio>
-      <el-radio :label="9">备选项</el-radio>
+      <el-radio v-for="(item, index) in options" :key="index" :label="item.label">{{item.text}}</el-radio>
     </el-radio-group>
   </div>
 </template>
 <script>
 export default {
   name: "Radio",
-  props:['item','index'],
+  props: ['index', 'currentOptions'],
+
   data() {
     return {
-      radio: 3,
+      options: [],
+      radio: '30',
     };
   },
+  created() { this.options = this.currentOptions; },
   methods: {
-    test() {
-      console.log(this.index);
-    },
   },
+  watch: {
+    currentOptions: {
+      handler: function () {
+        this.options = this.currentOptions;
+      },
+      deep: true
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

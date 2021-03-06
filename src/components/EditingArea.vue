@@ -2,7 +2,7 @@
   <div class="EditingArea">
     <draggable tag="ul" v-model="listdata" class="ul-draggable" v-bind="options()" @update="datadragEnd">
       <li v-for="(item, index) in listdata" :key="index" class="FCC">
-        <component :is="item.id" :item="item" :index="index"></component>
+        <component :is="item.id" :currentOptions="currentOptions" :index="index"></component>
         <div class="toolbar">
           <el-button type="primary" icon="el-icon-setting" @click.stop="setting(index)"></el-button>
           <template>
@@ -52,11 +52,11 @@ export default {
     DatePicker,
     FormComponents,
   },
-  props: ["item"],
+  props: ["item", 'currentOptions'],
   created() { },
-  updated() {},
+  updated() { },
   computed: {},
-  mounted() {},
+  mounted() { },
   methods: {
     options() {
       return {
@@ -69,14 +69,18 @@ export default {
     },
 
     //设置选中项
-    setting(index) {},
+    setting(index) {
+      this.$emit('getSettingId', index)
+    },
     //拖动结束
-    datadragEnd(){
+    datadragEnd() {
       console.log(this.listdata);
     },
     //移除选中项
-    confirm(index){
-     this.listdata.splice(index, 1);
+    confirm(index) {
+      this.listdata.splice(index, 1);
+
+      this.$emit("removeCurrentId", index)
     }
   },
   watch: {

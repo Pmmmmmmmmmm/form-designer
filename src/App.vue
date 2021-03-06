@@ -8,10 +8,15 @@
         <ComponentSelectionArea :mouseChangeFlag="mouseChangeFlag" @emitbtnid="pushComponents" />
       </div>
       <div class="main">
-        <EditingArea @mouseover.native="mouseover" @mouseout.native="mouseout" />
+        <EditingArea
+          @mouseover.native="mouseover"
+          @mouseout.native="mouseout"
+          @getSettingId="changeCurrentId"
+          :currentOptions="currentOptions"
+        />
       </div>
       <div class="rightAside">
-        <AttributeModificationArea />
+        <AttributeModificationArea :currentId="currentId" @emitOpintions="emitOpintions" />
       </div>
     </div>
   </div>
@@ -27,7 +32,12 @@ export default {
   name: "app",
   data() {
     return {
+      //鼠标进入编辑区域
       mouseChangeFlag: false,
+      //最近加入拖动列表的元素
+      currentId: '',
+      //当前操作的配置参数
+      currentOptions: {}
     };
   },
   components: {
@@ -45,12 +55,20 @@ export default {
     pushComponents(item) {
       this.$children[1].listdata.push(
         {
-          id:item.id,
-          settingOptions:{
-            value:'pm'
+          id: item.id,
+          settingOptions: {
+            value: 'pm'
           }
         });
+      this.currentId = item.id;
     },
+    changeCurrentId(index) {
+      this.currentId = this.$children[1].listdata[index].id;
+    },
+    emitOpintions(options) {
+      this.currentOptions = options;
+    }
+
   },
 };
 </script>
