@@ -2,14 +2,8 @@
   <div class="ComponentSelectionArea">
     <div class="basic">
       <h4>基础表单组件</h4>
-      <FormComponentButton
-        v-for="(item, index) in ButtonData"
-        :key="index"
-        :item="item"
-        v-bind="$attrs"
-        v-on="$listeners"
-      >
-        <span slot="title">{{ item.name }} </span>
+      <FormComponentButton v-for="(item, index) in ButtonData" :key="index" :item="item" v-bind="$attrs" v-on="$listeners">
+        <span slot="title">{{ item.name }}</span>
         <div slot="example" :is="item.id"></div>
       </FormComponentButton>
     </div>
@@ -17,17 +11,17 @@
 </template>
 
 <script>
-import Cascader from "./FormComponents/Cascader.vue";
-import FormComponentButton from "./FormComponentButton";
-import Checkbox from "./FormComponents/Checkbox.vue";
-import DatePicker from "./FormComponents/DatePicker.vue";
-import Formswitch from "./FormComponents/Formswitch.vue";
-import Input from "./FormComponents/Input.vue";
-import InputNumber from "./FormComponents/InputNumber.vue";
-import Radio from "./FormComponents/Radio.vue";
-import Select from "./FormComponents/Select.vue";
-import Slider from "./FormComponents/Slider.vue";
-import TimePicker from "./FormComponents/TimePicker.vue";
+import FormComponentButton from "./Components/FormComponentButton";
+import Cascader from "../../../components/FormComponents/Cascader";
+import Checkbox from "../../../components/FormComponents/Checkbox";
+import DatePicker from "../../../components/FormComponents/Cascader";
+import Formswitch from "../../../components/FormComponents/Formswitch";
+import Input from "../../../components/FormComponents/Input";
+import InputNumber from "../../../components/FormComponents/InputNumber";
+import Radio from "../../../components/FormComponents/Radio";
+import Select from "../../../components/FormComponents/Select";
+import Slider from "../../../components/FormComponents/Slider";
+import TimePicker from "../../../components/FormComponents/TimePicker";
 export default {
   name: "ComponentSelectionArea",
   data() {

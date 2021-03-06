@@ -20,17 +20,17 @@
 
 <script>
 import draggable from "vuedraggable";
-import FormComponents from "./FormComponents.vue";
-import Cascader from "./FormComponents/Cascader.vue";
-import Checkbox from "./FormComponents/Checkbox.vue";
-import DatePicker from "./FormComponents/DatePicker.vue";
-import Formswitch from "./FormComponents/Formswitch.vue";
-import Input from "./FormComponents/Input.vue";
-import InputNumber from "./FormComponents/InputNumber.vue";
-import Radio from "./FormComponents/Radio.vue";
-import Select from "./FormComponents/Select.vue";
-import Slider from "./FormComponents/Slider.vue";
-import TimePicker from "./FormComponents/TimePicker.vue";
+import FormComponents from "../../../components/FormComponents";
+import Cascader from "../../../components/FormComponents/Cascader";
+import Checkbox from "../../../components/FormComponents/Checkbox";
+import DatePicker from "../../../components/FormComponents/Cascader";
+import Formswitch from "../../../components/FormComponents/Formswitch";
+import Input from "../../../components/FormComponents/Input";
+import InputNumber from "../../../components/FormComponents/InputNumber";
+import Radio from "../../../components/FormComponents/Radio";
+import Select from "../../../components/FormComponents/Select";
+import Slider from "../../../components/FormComponents/Slider";
+import TimePicker from "../../../components/FormComponents/TimePicker";
 export default {
   name: "EditingArea",
   data() {
@@ -114,12 +114,9 @@ export default {
       padding: 10px;
       background: #ecf5ff;
       border: 2px dashed #909399;
-
       border-radius: 2px;
       margin-bottom: 5px;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
+
       &:hover {
         background-color: #f1f1f1;
         cursor: move;
