@@ -12,11 +12,16 @@ export default {
 
   data() {
     return {
-      options: [],
+      options: [
+        { text: '选项1', label: 'valeu1' },
+        { text: '选项2', label: 'value2' },
+      ],
       radio: '30',
     };
   },
-  created() { this.options = this.currentOptions; },
+  created() {
+    this.options = this.currentOptions;
+  },
   methods: {
   },
   watch: {

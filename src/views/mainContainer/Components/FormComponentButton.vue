@@ -2,10 +2,7 @@
   <div class="FormComponentButton">
     <el-button @mousedown.native="drag($event)">
       <slot name="title"></slot>
-      <div
-        :class="{ FCC: mouseChangeFlag, example: !mouseChangeFlag }"
-        v-show="show"
-      >
+      <div :class="{ FCC: mouseChangeFlag, example: !mouseChangeFlag }" v-show="show">
         <div class="style" ref="dragTarget">
           <slot name="example"></slot>
         </div>
@@ -40,7 +37,7 @@ export default {
       };
       window.onmouseup = () => {
         if (this.mouseChangeFlag) {
-          this.$emit("emitbtnid", this.item);
+          this.$emit("getItemID", this.item);
         }
         if (this.show) {
           this.show = false;

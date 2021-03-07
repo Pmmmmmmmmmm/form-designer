@@ -5,17 +5,43 @@
     </header>
     <div class="container">
       <div class="leftAside">
-        <ComponentSelectionArea :mouseChangeFlag="mouseChangeFlag" @emitbtnid="pushComponents" />
+        <!-- ComponentSelectionArea -->
+        <div class="componentSelectionArea">
+          <div class="basic">
+            <h4>基础表单组件</h4>
+            <form-component-button
+              v-for="(item, index) in buttonData"
+              :key="index"
+              :item="item"
+              :mouseChangeFlag="mouseChangeFlag"
+              @getItemID="pushComponents"
+            >
+              <span slot="title">{{ item.name }}</span>
+              <div slot="example" :is="item.id"></div>
+            </form-component-button>
+          </div>
+        </div>
       </div>
       <div class="main">
-        <EditingArea
-          @mouseover.native="mouseover"
-          @mouseout.native="mouseout"
-          @getSettingId="changeCurrentId"
-          :currentOptions="currentOptions"
-        />
+        <!-- EditingArea -->
+        <div class="editingArea" @mouseover="mouseover" @mouseout="mouseout" :currentOptions="currentOptions">
+          <draggable tag="ul" v-model="listdata" class="ul-draggable" v-bind="options()" @update="datadragEnd">
+            <li v-for="(item, index) in listdata" :key="index" class="FCC">
+              <component :is="item.id" :currentOptions="currentOptions" :index="index"></component>
+              <div class="toolbar">
+                <el-button type="primary" icon="el-icon-setting" @click.stop="setting(index)"></el-button>
+                <template>
+                  <el-popconfirm title="确定删除此项吗？" @confirm="confirm(index)">
+                    <el-button type="danger" slot="reference" icon="el-icon-delete"></el-button>
+                  </el-popconfirm>
+                </template>
+              </div>
+            </li>
+          </draggable>
+        </div>
       </div>
       <div class="rightAside">
+        <!-- 属性编辑区域 -->
         <AttributeModificationArea :currentId="currentId" @emitOpintions="emitOpintions" />
       </div>
     </div>
@@ -24,9 +50,22 @@
 
 <script>
 // 引入主体的三块区域
-import ComponentSelectionArea from "./ComponentSelectionArea";
-import EditingArea from "./EditingArea";
+// import ComponentSelectionArea from "./ComponentSelectionArea";
+import draggable from "vuedraggable";
 import AttributeModificationArea from "./AttributeModificationArea";
+import FormComponentButton from './Components/FormComponentButton.vue';
+//表单组件
+import Cascader from "../../components/FormComponents/Cascader";
+import Checkbox from "../../components/FormComponents/Checkbox";
+import DatePicker from "../../components/FormComponents/Cascader";
+import Formswitch from "../../components/FormComponents/Formswitch";
+import Input from "../../components/FormComponents/Input";
+import InputNumber from "../../components/FormComponents/InputNumber";
+import Radio from "../../components/FormComponents/Radio";
+import Select from "../../components/FormComponents/Select";
+import Slider from "../../components/FormComponents/Slider";
+import TimePicker from "../../components/FormComponents/TimePicker";
+
 // 引入表单组件
 export default {
   name: "mainContainer",
@@ -37,23 +76,51 @@ export default {
       //最近加入拖动列表的元素
       currentId: '',
       //当前操作的配置参数
-      currentOptions: {}
+      currentOptions: {},
+      //按钮数据源
+      buttonData: [
+        { name: "单选框", id: "Radio" },
+        { name: "多选框", id: "Checkbox" },
+        { name: "输入框", id: "Input" },
+        { name: "计数器", id: "InputNumber" },
+        { name: "选择器", id: "Select" },
+        { name: "级联选择器", id: "Cascader" },
+        { name: "开关", id: "Formswitch" },
+        { name: "滑块", id: "Slider" },
+        { name: "时间选择", id: "TimePicker" },
+        { name: "日期选择", id: "DatePicker" },
+      ],
+      //渲染拖拽组件
+      listdata: [],
     };
   },
   components: {
-    ComponentSelectionArea,
-    EditingArea,
+    // ComponentSelectionArea,
     AttributeModificationArea,
+    FormComponentButton,
+    //表单组件
+    Radio,
+    Checkbox,
+    Input,
+    InputNumber,
+    Select,
+    Cascader,
+    Formswitch,
+    Slider,
+    TimePicker,
+    DatePicker,
+    //拖拽插件
+    draggable
   },
   methods: {
-    mouseover() {
+    mouseover() {  //鼠标进入编辑区域
       this.mouseChangeFlag = true;
     },
-    mouseout() {
+    mouseout() {//离开进入编辑区域
       this.mouseChangeFlag = false;
     },
-    pushComponents(item) {
-      this.$children[1].listdata.push(
+    pushComponents(item) {//将选中的表单组件加入编辑区域
+      this.listdata.push(
         {
           id: item.id,
           settingOptions: {
@@ -62,13 +129,36 @@ export default {
         });
       this.currentId = item.id;
     },
-    changeCurrentId(index) {
-      this.currentId = this.$children[1].listdata[index].id;
-    },
-    emitOpintions(options) {
+    emitOpintions(options) { //将选中的
       this.currentOptions = options;
-    }
+    },
+    //主体区域
+    options() {
+      return {
+        animation: 150, // 动画时间
+        disabled: false, // false可拖拽，true不可拖拽
+        // group: "description",
+        chosenClass: "sortable-chosen", // 设置被选中的元素的class
+        ghostClass: "ghost",
+      };
+    },
 
+    //设置选中项
+    setting(index) {
+      this.currentId = this.listdata[index].id;
+    },
+    //拖动结束
+    datadragEnd() {
+    },
+    //移除选中项
+    confirm(index) {
+      this.listdata.splice(index, 1);
+      this.$emit("removeCurrentId", index)
+    },
+  },
+  watch: {
+    listdata: function (newVal) {
+    },
   },
 };
 </script>
@@ -99,11 +189,76 @@ export default {
     height: calc(100% - 40px);
     .leftAside {
       width: 280px;
+
+      .componentSelectionArea {
+        height: 100%;
+        padding: 10px;
+        border: 1px solid #dcdfe6;
+        background-color: #ecf5ff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+        border-radius: 4px;
+        h4 {
+          margin-left: 10px;
+        }
+      }
     }
     .main {
       min-width: 500px;
       flex: 1;
       background-color: #ecf5ff;
+      .editingArea {
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+        padding: 0 0 10px 10px;
+        height: calc(100% - 40px);
+        overflow-y: scroll;
+        border: 1px solid #dcdfe6;
+        border-radius: 4px;
+        background-color: #c6e2ff;
+        .ul-draggable {
+          padding: 0;
+          margin-top: 10px;
+          .FCC {
+            z-index: 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            min-height: 50px;
+            padding: 10px;
+            background: #ecf5ff;
+            border: 2px dashed #909399;
+            border-radius: 2px;
+            margin-bottom: 5px;
+
+            &:hover {
+              background-color: #f1f1f1;
+              cursor: move;
+            }
+            .sortable-chosen {
+              border: solid 2px #3089dc !important;
+            }
+            .ghost {
+              display: none;
+            }
+            .toolbar {
+              position: absolute;
+              top: 2px;
+              right: 2px;
+              z-index: 1;
+              width: 62px;
+              display: flex;
+              justify-content: space-between;
+              .el-button {
+                width: 30px;
+                height: 30px;
+                padding: 0;
+                margin: 0;
+              }
+            }
+          }
+        }
+      }
     }
     .rightAside {
       width: 300px;

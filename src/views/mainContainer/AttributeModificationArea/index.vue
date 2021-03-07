@@ -38,8 +38,8 @@ export default {
       //单选框
       radioOptions: {
         contentOptions: [
-          { label: '', text: '' },
-          { label: '', text: '' }
+          { label: 'value1', text: '选项1' },
+          { label: 'value2', text: '选项2' }
         ]
       }
 
@@ -48,7 +48,7 @@ export default {
     };
   },
   components: {},
-  created() { },
+  created() { this.$emit('emitOpintions', this.radioOptions.contentOptions) },
   mounted() { },
   methods: {
     // 删除确认
@@ -57,7 +57,11 @@ export default {
     },
     //添加选项
     addOptions() {
-      this.radioOptions.contentOptions.push({ label: '', text: '' });
+      this.radioOptions.contentOptions.push(
+        {
+          label: `value${this.radioOptions.contentOptions.length + 1}`,
+          text: `选项${this.radioOptions.contentOptions.length + 1}`
+        });
     }
   },
   watch: {
