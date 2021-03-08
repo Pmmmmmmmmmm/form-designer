@@ -27,7 +27,7 @@
         <div class="editingArea" @mouseover="mouseover" @mouseout="mouseout" :currentOptions="currentOptions">
           <draggable tag="ul" v-model="listdata" class="ul-draggable" v-bind="options()" @update="datadragEnd">
             <li v-for="(item, index) in listdata" :key="index" class="FCC">
-              <component :is="item.id" :currentOptions="currentOptions" :index="index"></component>
+              <component :is="item.id" :currentOptions="item.options" :index="index"></component>
               <div class="toolbar">
                 <el-button type="primary" icon="el-icon-setting" @click.stop="setting(index)"></el-button>
                 <template>
@@ -42,7 +42,7 @@
       </div>
       <div class="rightAside">
         <!-- 属性编辑区域 -->
-        <AttributeModificationArea :currentId="currentId" @emitOpintions="emitOpintions" />
+        <AttributeModificationArea :currentItem="currentItem" @emitOpintions="emitOpintions(arguments)" />
       </div>
     </div>
   </div>
@@ -50,10 +50,10 @@
 
 <script>
 // 引入主体的三块区域
-// import ComponentSelectionArea from "./ComponentSelectionArea";
+
 import draggable from "vuedraggable";
-import AttributeModificationArea from "./AttributeModificationArea";
-import FormComponentButton from './Components/FormComponentButton.vue';
+import AttributeModificationArea from "./attributeModificationArea";
+import FormComponentButton from './components/FormComponentButton';
 //表单组件
 import Cascader from "../../components/FormComponents/Cascader";
 import Checkbox from "../../components/FormComponents/Checkbox";
@@ -74,7 +74,7 @@ export default {
       //鼠标进入编辑区域
       mouseChangeFlag: false,
       //最近加入拖动列表的元素
-      currentId: '',
+      currentItem: {},
       //当前操作的配置参数
       currentOptions: {},
       //按钮数据源
@@ -123,14 +123,13 @@ export default {
       this.listdata.push(
         {
           id: item.id,
-          settingOptions: {
-            value: 'pm'
-          }
+
         });
-      this.currentId = item.id;
+      // this.currentItem.id = item.id;
+      // this.currentItem.index = item.index
     },
-    emitOpintions(options) { //将选中的
-      this.currentOptions = options;
+    emitOpintions(arg) { //将选中的
+      this.listdata[arg[1]].options = arg[0];
     },
     //主体区域
     options() {
@@ -145,10 +144,15 @@ export default {
 
     //设置选中项
     setting(index) {
-      this.currentId = this.listdata[index].id;
+      this.currentItem = {
+        id: this.listdata[index].id,
+        index: index
+      };
+      console.log(this.currentItem);
     },
     //拖动结束
     datadragEnd() {
+      console.log(this.listdata);
     },
     //移除选中项
     confirm(index) {
@@ -158,6 +162,7 @@ export default {
   },
   watch: {
     listdata: function (newVal) {
+
     },
   },
 };
