@@ -9,7 +9,7 @@
         <div class="componentSelectionArea">
           <div class="basic">
             <h4>基础表单组件</h4>
-            <form-component-button
+            <!-- <form-component-button
               v-for="(item, index) in buttonData"
               :key="index"
               :item="item"
@@ -18,14 +18,30 @@
             >
               <span slot="title">{{ item.name }}</span>
               <div slot="example" :is="item.id"></div>
-            </form-component-button>
+            </form-component-button>-->
+
+            <!-- 拖拽A -->
+            <draggable v-model="buttonData" v-bind="optionsA" @start="onStart" @end="onEnd">
+              <transition-group>
+                <div class="formComponentButton" v-for="(item, index) in buttonData" :key="index">
+                  <el-button @mouseover.native="exampleShow(index)" @mouseout.native="exampleShow('')">
+                    <span>{{ item.name }}</span>
+                    <div class="example" v-show="index==exampleShow">
+                      <div class="style">
+                        <component :is="item.id"></component>
+                      </div>
+                    </div>
+                  </el-button>
+                </div>
+              </transition-group>
+            </draggable>
           </div>
         </div>
       </div>
       <div class="main">
         <!-- EditingArea -->
-        <div class="editingArea" @mouseover="mouseover" @mouseout="mouseout" :currentOptions="currentOptions">
-          <draggable tag="ul" v-model="listdata" class="ul-draggable" v-bind="options()" @update="datadragEnd">
+        <div class="editingArea">
+          <!-- <draggable tag="ul" v-model="listdata" class="ul-draggable" v-bind="options()" @update="datadragEnd">
             <li v-for="(item, index) in listdata" :key="index" class="FCC">
               <component :is="item.id" :currentOptions="item.options" :index="index"></component>
               <div class="toolbar">
@@ -37,6 +53,12 @@
                 </template>
               </div>
             </li>
+          </draggable>-->
+          <!-- 拖拽B -->
+          <draggable v-bind="optionsB" v-model="listdata" @start="onStart" @end="onEnd">
+            <transition-group>
+              <div class="item" v-for="(item,index) in listdata" :key="index">{{item.id}}</div>
+            </transition-group>
           </draggable>
         </div>
       </div>
@@ -71,8 +93,9 @@ export default {
   name: "mainContainer",
   data() {
     return {
+      drag: false,
       //鼠标进入编辑区域
-      mouseChangeFlag: false,
+      // mouseChangeFlag: false,
       //最近加入拖动列表的元素
       currentItem: {},
       //当前操作的配置参数
@@ -91,7 +114,32 @@ export default {
         { name: "日期选择", id: "DatePicker" },
       ],
       //渲染拖拽组件
-      listdata: [],
+      listdata: [{ name: "单选框", id: "Radio" }],
+      //example显示
+
+      optionsA: {
+        group: {
+          name: "site",
+          pull: 'clone',
+          put: false
+        },
+        sort: false,
+        animation: "160",
+        dragClass: "dragClass",
+        ghostClass: "ghostClass",
+        chosenClass: "chosenClass",
+        forceFallback: true,
+
+      },
+      optionsB: {
+        group: "site",
+        animation: "160",
+        dragClass: "dragClass",
+        ghostClass: "ghostClass",
+        chosenClass: "chosenClass",
+        forceFallback: true,
+
+      },
     };
   },
   components: {
@@ -113,34 +161,35 @@ export default {
     draggable
   },
   methods: {
-    mouseover() {  //鼠标进入编辑区域
-      this.mouseChangeFlag = true;
-    },
-    mouseout() {//离开进入编辑区域
-      this.mouseChangeFlag = false;
-    },
-    pushComponents(item) {//将选中的表单组件加入编辑区域
-      this.listdata.push(
-        {
-          id: item.id,
+    // mouseover() {  //鼠标进入编辑区域
+    //   this.mouseChangeFlag = true;
+    // },
+    // mouseout() {//离开进入编辑区域
+    //   this.mouseChangeFlag = false;
+    // },
+    // pushComponents(item) {//将选中的表单组件加入编辑区域
+    //   this.listdata.push(
+    //     {
+    //       id: item.id,
 
-        });
-      // this.currentItem.id = item.id;
-      // this.currentItem.index = item.index
-    },
-    emitOpintions(arg) { //将选中的
-      this.listdata[arg[1]].options = arg[0];
-    },
-    //主体区域
-    options() {
-      return {
-        animation: 150, // 动画时间
-        disabled: false, // false可拖拽，true不可拖拽
-        // group: "description",
-        chosenClass: "sortable-chosen", // 设置被选中的元素的class
-        ghostClass: "ghost",
-      };
-    },
+    //     });
+    //   // this.currentItem.id = item.id;
+    //   // this.currentItem.index = item.index
+    // },
+    // emitOpintions(arg) { //将选中的
+    //   this.listdata[arg[1]].options = arg[0];
+    // },
+
+    // //主体区域
+    // options() {
+    //   return {
+    //     animation: 150, // 动画时间
+    //     disabled: false, // false可拖拽，true不可拖拽
+    //     // group: "description",
+    //     chosenClass: "sortable-chosen", // 设置被选中的元素的class
+    //     ghostClass: "ghost",
+    //   };
+    // },
 
     //设置选中项
     setting(index) {
@@ -159,6 +208,19 @@ export default {
       this.listdata.splice(index, 1);
       this.$emit("removeCurrentId", index)
     },
+    //开始拖拽事件
+    onStart() {
+      this.drag = true;
+    },
+    //拖拽结束事件
+    onEnd() {
+      this.drag = false;
+      this.exampleShow = false;
+      console.log(this.arr2);
+    },
+    exampleShow(index) {
+      return index
+    }
   },
   watch: {
     listdata: function (newVal) {
@@ -194,7 +256,6 @@ export default {
     height: calc(100% - 40px);
     .leftAside {
       width: 280px;
-
       .componentSelectionArea {
         height: 100%;
         padding: 10px;
@@ -204,6 +265,29 @@ export default {
         border-radius: 4px;
         h4 {
           margin-left: 10px;
+        }
+        .formComponentButton {
+          display: inline-block;
+          width: 120px;
+          margin: 0 0 5px 5px;
+          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+          .el-button {
+            width: 100%;
+            .example {
+              .style {
+                position: absolute;
+                min-width: 300px;
+                display: flex;
+                align-items: center;
+                z-index: 1;
+                background-color: rgba(255, 255, 255);
+                min-height: 50px;
+                padding: 20px;
+                border-radius: 4px;
+                box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.507);
+              }
+            }
+          }
         }
       }
     }

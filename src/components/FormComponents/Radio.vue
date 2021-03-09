@@ -20,7 +20,7 @@ export default {
     };
   },
   created() {
-    this.options = this.currentOptions;
+    this.currentOptions && (this.options = this.currentOptions)
   },
   methods: {
   },
