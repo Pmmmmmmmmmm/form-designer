@@ -9,28 +9,12 @@
         <div class="componentSelectionArea">
           <div class="basic">
             <h4>基础表单组件</h4>
-            <!-- <form-component-button
-              v-for="(item, index) in buttonData"
-              :key="index"
-              :item="item"
-              :mouseChangeFlag="mouseChangeFlag"
-              @getItemID="pushComponents"
-            >
-              <span slot="title">{{ item.name }}</span>
-              <div slot="example" :is="item.id"></div>
-            </form-component-button>-->
-
             <!-- 拖拽A -->
-            <draggable v-model="buttonData" v-bind="optionsA" @start="onStart" @end="onEnd">
+            <draggable v-model="buttonData" v-bind="optionsA" @start="onStart" @end="onEnd" :move="onMove">
               <transition-group>
                 <div class="formComponentButton" v-for="(item, index) in buttonData" :key="index">
-                  <el-button @mouseover.native="exampleShow(index)" @mouseout.native="exampleShow('')">
+                  <el-button class="dragTarget">
                     <span>{{ item.name }}</span>
-                    <div class="example" v-show="index==exampleShow">
-                      <div class="style">
-                        <component :is="item.id"></component>
-                      </div>
-                    </div>
                   </el-button>
                 </div>
               </transition-group>
@@ -41,23 +25,46 @@
       <div class="main">
         <!-- EditingArea -->
         <div class="editingArea">
-          <!-- <draggable tag="ul" v-model="listdata" class="ul-draggable" v-bind="options()" @update="datadragEnd">
-            <li v-for="(item, index) in listdata" :key="index" class="FCC">
-              <component :is="item.id" :currentOptions="item.options" :index="index"></component>
-              <div class="toolbar">
-                <el-button type="primary" icon="el-icon-setting" @click.stop="setting(index)"></el-button>
-                <template>
-                  <el-popconfirm title="确定删除此项吗？" @confirm="confirm(index)">
-                    <el-button type="danger" slot="reference" icon="el-icon-delete"></el-button>
-                  </el-popconfirm>
-                </template>
-              </div>
-            </li>
-          </draggable>-->
           <!-- 拖拽B -->
-          <draggable v-bind="optionsB" v-model="listdata" @start="onStart" @end="onEnd">
+          <draggable v-bind="optionsB" v-model="listdata" @start="onStart" @end="onEnd" class="draggableArea">
             <transition-group>
-              <div class="item" v-for="(item,index) in listdata" :key="index">{{item.id}}</div>
+              <div class="FCC" v-for="(item,index) in listdata" :key="index">
+                <div class="toolbar">
+                  <el-button type="primary" icon="el-icon-rank" class="handle" title="按此处拖动"></el-button>
+                  <div>
+                    <el-button type="success" icon="el-icon-plus" @click.stop title="点击在此行添加元素"></el-button>
+                    <el-button type="primary" icon="el-icon-setting" @click.stop="setting(index)" title="设置"></el-button>
+                    <template>
+                      <el-popconfirm title="确定删除此项吗？" @confirm="confirm(index)">
+                        <el-button type="danger" slot="reference" icon="el-icon-delete"></el-button>
+                      </el-popconfirm>
+                    </template>
+                  </div>
+                </div>
+                <div v-if="Array.isArray(item)" class="tabel">
+                  <draggable v-bind="innerOptionsB" v-model="listdata[index]" @start="onStart" @end="onEnd">
+                    <transition-group class="innerDraggableList">
+                      <div class="innerFCC" v-for="(innerItem,innerIndex) in item" :key="innerIndex">
+                        <div class="toolbar">
+                          <el-button type="primary" icon="el-icon-rank" class="handle" title="按此处拖动"></el-button>
+                          <div>
+                            <el-button type="primary" icon="el-icon-setting" @click.stop="setting(index,innerIndex)" title="设置"></el-button>
+                            <template>
+                              <el-popconfirm title="确定删除此项吗？" @confirm="confirm(index,innerIndex)">
+                                <el-button type="danger" slot="reference" icon="el-icon-delete"></el-button>
+                              </el-popconfirm>
+                            </template>
+                          </div>
+                        </div>
+                        <component :is="innerItem.id" :currentOptions="innerItem.options" :index="innerIndex"></component>
+                      </div>
+                    </transition-group>
+                  </draggable>
+                </div>
+                <div v-else>
+                  <component :is="item.id" :currentOptions="item.options" :index="index"></component>
+                </div>
+              </div>
             </transition-group>
           </draggable>
         </div>
@@ -75,7 +82,7 @@
 
 import draggable from "vuedraggable";
 import AttributeModificationArea from "./attributeModificationArea";
-import FormComponentButton from './components/FormComponentButton';
+
 //表单组件
 import Cascader from "../../components/FormComponents/Cascader";
 import Checkbox from "../../components/FormComponents/Checkbox";
@@ -94,28 +101,30 @@ export default {
   data() {
     return {
       drag: false,
-      //鼠标进入编辑区域
-      // mouseChangeFlag: false,
       //最近加入拖动列表的元素
       currentItem: {},
       //当前操作的配置参数
       currentOptions: {},
       //按钮数据源
       buttonData: [
-        { name: "单选框", id: "Radio" },
-        { name: "多选框", id: "Checkbox" },
-        { name: "输入框", id: "Input" },
-        { name: "计数器", id: "InputNumber" },
-        { name: "选择器", id: "Select" },
-        { name: "级联选择器", id: "Cascader" },
-        { name: "开关", id: "Formswitch" },
-        { name: "滑块", id: "Slider" },
-        { name: "时间选择", id: "TimePicker" },
-        { name: "日期选择", id: "DatePicker" },
+        { name: "单选框", id: "Radio", options: {} },
+        { name: "多选框", id: "Checkbox", options: {} },
+        { name: "输入框", id: "Input", options: {} },
+        { name: "计数器", id: "InputNumber", options: {} },
+        { name: "选择器", id: "Select", options: {} },
+        { name: "级联选择器", id: "Cascader", options: {} },
+        { name: "开关", id: "Formswitch", options: {} },
+        { name: "滑块", id: "Slider", options: {} },
+        { name: "时间选择", id: "TimePicker", options: {} },
+        { name: "日期选择", id: "DatePicker", options: {} },
       ],
       //渲染拖拽组件
-      listdata: [{ name: "单选框", id: "Radio" }],
-      //example显示
+      listdata: [
+        { name: "单选框", id: "Radio", options: {} },
+        // [
+        //   { name: "单选框", id: "Radio", options: {} },
+        // ],
+      ],
 
       optionsA: {
         group: {
@@ -123,6 +132,7 @@ export default {
           pull: 'clone',
           put: false
         },
+
         sort: false,
         animation: "160",
         dragClass: "dragClass",
@@ -137,15 +147,29 @@ export default {
         dragClass: "dragClass",
         ghostClass: "ghostClass",
         chosenClass: "chosenClass",
+        handle: '.handle',
+        forceFallback: true,
+
+      },
+
+      innerOptionsB: {
+        group: {
+          name: "site",
+          pull: false,
+
+        },
+        animation: "100",
+        dragClass: "dragClass",
+        ghostClass: "ghostClass",
+        chosenClass: "chosenClass",
+        handle: '.handle',
         forceFallback: true,
 
       },
     };
   },
   components: {
-    // ComponentSelectionArea,
     AttributeModificationArea,
-    FormComponentButton,
     //表单组件
     Radio,
     Checkbox,
@@ -161,52 +185,40 @@ export default {
     draggable
   },
   methods: {
-    // mouseover() {  //鼠标进入编辑区域
-    //   this.mouseChangeFlag = true;
-    // },
-    // mouseout() {//离开进入编辑区域
-    //   this.mouseChangeFlag = false;
-    // },
-    // pushComponents(item) {//将选中的表单组件加入编辑区域
-    //   this.listdata.push(
-    //     {
-    //       id: item.id,
-
-    //     });
-    //   // this.currentItem.id = item.id;
-    //   // this.currentItem.index = item.index
-    // },
-    // emitOpintions(arg) { //将选中的
-    //   this.listdata[arg[1]].options = arg[0];
-    // },
-
-    // //主体区域
-    // options() {
-    //   return {
-    //     animation: 150, // 动画时间
-    //     disabled: false, // false可拖拽，true不可拖拽
-    //     // group: "description",
-    //     chosenClass: "sortable-chosen", // 设置被选中的元素的class
-    //     ghostClass: "ghost",
-    //   };
-    // },
 
     //设置选中项
-    setting(index) {
-      this.currentItem = {
-        id: this.listdata[index].id,
-        index: index
-      };
+    setting() {
+      if (arguments.length == 1) {
+        this.currentItem = {
+          id: this.listdata[arguments[0]].id,
+          index: arguments[0],
+          options: this.listdata[arguments[0]].options,
+        };
+      }
+      if (arguments.length == 2) {
+        this.currentItem = {
+          id: this.listdata[arguments[0]][arguments[1]].id,
+          index: arguments[0],
+          innerIndex: arguments[1],
+          options: this.listdata[arguments[0]][arguments[1]].options,
+        };
+      }
       console.log(this.currentItem);
     },
     //拖动结束
     datadragEnd() {
-      console.log(this.listdata);
+
     },
     //移除选中项
-    confirm(index) {
-      this.listdata.splice(index, 1);
-      this.$emit("removeCurrentId", index)
+    confirm() {
+      console.log(this.listdata);
+      if (arguments.length == 1) {
+        this.listdata.splice(arguments[0], 1);
+      }
+      if (arguments.length == 2) {
+        this.listdata[arguments[0]].splice(arguments[1], 1);
+
+      }
     },
     //开始拖拽事件
     onStart() {
@@ -215,16 +227,13 @@ export default {
     //拖拽结束事件
     onEnd() {
       this.drag = false;
-      this.exampleShow = false;
-      console.log(this.arr2);
-    },
-    exampleShow(index) {
-      return index
-    }
-  },
-  watch: {
-    listdata: function (newVal) {
+      console.log(this.listdata);
 
+    },
+
+    //move回调方法
+    onMove(e) {
+      e.dragged.classList.add("FCC")
     },
   },
 };
@@ -235,7 +244,6 @@ export default {
   position: fixed;
   width: 100vw;
   height: 100%;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   header {
@@ -272,10 +280,14 @@ export default {
           margin: 0 0 5px 5px;
           box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
           .el-button {
+            position: relative;
             width: 100%;
+            cursor: move;
             .example {
               .style {
                 position: absolute;
+                top: 0px;
+                left: 140px;
                 min-width: 300px;
                 display: flex;
                 align-items: center;
@@ -299,48 +311,106 @@ export default {
         display: flex;
         flex-direction: column;
         margin: 10px;
-        padding: 0 0 10px 10px;
-        height: calc(100% - 40px);
+        //给滚动条预留位置
+        padding: 10px 0 10px 10px;
+        height: calc(100% - 50px);
         overflow-y: scroll;
         border: 1px solid #dcdfe6;
         border-radius: 4px;
         background-color: #c6e2ff;
-        .ul-draggable {
-          padding: 0;
-          margin-top: 10px;
+        .draggableArea {
+          width: 100%;
+          height: 50px;
           .FCC {
             z-index: 0;
             position: relative;
-            display: flex;
-            align-items: center;
-            min-height: 50px;
-            padding: 10px;
+            min-height: 20px;
+            padding: 27px 8px 8px 8px;
             background: #ecf5ff;
             border: 2px dashed #909399;
-            border-radius: 2px;
+            border-radius: 4px;
             margin-bottom: 5px;
-
             &:hover {
-              background-color: #f1f1f1;
-              cursor: move;
+              background-color: #d9ecff;
             }
-            .sortable-chosen {
-              border: solid 2px #3089dc !important;
+
+            .innerDraggableList {
+              display: flex;
+              .innerFCC {
+                flex: 1;
+                z-index: 0;
+                max-width: 25%;
+                position: relative;
+                display: flex;
+                align-items: center;
+                min-height: 50px;
+                padding: 27px 10px 10px 10px;
+                background: #ecf5ff;
+                border: 1px dotted #909399;
+                border-radius: 4px;
+                &:hover {
+                  background-color: #f1f1f1;
+                }
+                .dragTarget {
+                  border: 0;
+                  span {
+                    font-size: 20px;
+                  }
+                }
+
+                .toolbar {
+                  z-index: 1;
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  box-sizing: border-box;
+                  width: 100%;
+                  padding: 2px 2px 0 2px;
+                  display: flex;
+                  justify-content: space-between;
+                  div {
+                    display: flex;
+                    width: 48px;
+                    justify-content: space-between;
+                  }
+                  .el-button {
+                    font-size: 16px;
+                    width: 23px;
+                    height: 23px;
+                    padding: 0;
+                    margin: 0;
+                  }
+                }
+              }
             }
-            .ghost {
-              display: none;
+
+            //选择区域拖进时改变样式
+            .dragTarget {
+              border: 0;
+              span {
+                font-size: 20px;
+              }
             }
+
             .toolbar {
-              position: absolute;
-              top: 2px;
-              right: 2px;
               z-index: 1;
-              width: 62px;
+              position: absolute;
+              top: 0;
+              left: 0;
+              box-sizing: border-box;
+              width: 100%;
+              padding: 2px 2px 0 2px;
               display: flex;
               justify-content: space-between;
+              div {
+                display: flex;
+                width: 73px;
+                justify-content: space-between;
+              }
               .el-button {
-                width: 30px;
-                height: 30px;
+                font-size: 16px;
+                width: 23px;
+                height: 23px;
                 padding: 0;
                 margin: 0;
               }
@@ -355,4 +425,3 @@ export default {
   }
 }
 </style>
-
