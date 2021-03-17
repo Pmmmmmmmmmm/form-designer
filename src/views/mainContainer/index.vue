@@ -32,7 +32,13 @@
                 <div class="toolbar">
                   <el-button type="primary" icon="el-icon-rank" class="handle" title="按此处拖动"></el-button>
                   <div>
-                    <el-button type="success" icon="el-icon-plus" @click.stop title="点击在此行添加元素"></el-button>
+                    <el-button
+                      v-if="!Array.isArray(item)"
+                      type="success"
+                      icon="el-icon-plus"
+                      @click.stop="addRow(index)"
+                      title="点击在此行添加元素"
+                    ></el-button>
                     <el-button type="primary" icon="el-icon-setting" @click.stop="setting(index)" title="设置"></el-button>
                     <template>
                       <el-popconfirm title="确定删除此项吗？" @confirm="confirm(index)">
@@ -71,7 +77,7 @@
       </div>
       <div class="rightAside">
         <!-- 属性编辑区域 -->
-        <AttributeModificationArea :currentItem="currentItem" @emitOpintions="emitOpintions(arguments)" />
+        <AttributeModificationArea :currentItem="currentItem" @emitOpintions="emitOpintions" />
       </div>
     </div>
   </div>
@@ -107,16 +113,16 @@ export default {
       currentOptions: {},
       //按钮数据源
       buttonData: [
-        { name: "单选框", id: "Radio", options: {} },
-        { name: "多选框", id: "Checkbox", options: {} },
-        { name: "输入框", id: "Input", options: {} },
-        { name: "计数器", id: "InputNumber", options: {} },
-        { name: "选择器", id: "Select", options: {} },
-        { name: "级联选择器", id: "Cascader", options: {} },
-        { name: "开关", id: "Formswitch", options: {} },
-        { name: "滑块", id: "Slider", options: {} },
-        { name: "时间选择", id: "TimePicker", options: {} },
-        { name: "日期选择", id: "DatePicker", options: {} },
+        { name: "单选框", id: "Radio", options: null },
+        { name: "多选框", id: "Checkbox", options: null },
+        { name: "输入框", id: "Input", options: null },
+        { name: "计数器", id: "InputNumber", options: null },
+        { name: "选择器", id: "Select", options: null },
+        { name: "级联选择器", id: "Cascader", options: null },
+        { name: "开关", id: "Formswitch", options: null },
+        { name: "滑块", id: "Slider", options: null },
+        { name: "时间选择", id: "TimePicker", options: null },
+        { name: "日期选择", id: "DatePicker", options: null },
       ],
       //渲染拖拽组件
       listdata: [
@@ -185,7 +191,10 @@ export default {
     draggable
   },
   methods: {
-
+    //将属性设置模块返回的参数渲染到组件中
+    emitOpintions() {
+      console.log(arguments);
+    },
     //设置选中项
     setting() {
       if (arguments.length == 1) {
@@ -203,23 +212,24 @@ export default {
           options: this.listdata[arguments[0]][arguments[1]].options,
         };
       }
-      console.log(this.currentItem);
     },
-    //拖动结束
-    datadragEnd() {
-
+    //添加子元素
+    addRow(index) {
+      this.listdata[index] = [this.listdata[index]]
+      this.$forceUpdate()
     },
     //移除选中项
     confirm() {
-      console.log(this.listdata);
       if (arguments.length == 1) {
         this.listdata.splice(arguments[0], 1);
       }
       if (arguments.length == 2) {
         this.listdata[arguments[0]].splice(arguments[1], 1);
-
       }
+      this.$forceUpdate()
+
     },
+
     //开始拖拽事件
     onStart() {
       this.drag = true;
@@ -227,8 +237,6 @@ export default {
     //拖拽结束事件
     onEnd() {
       this.drag = false;
-      console.log(this.listdata);
-
     },
 
     //move回调方法
@@ -332,6 +340,9 @@ export default {
             margin-bottom: 5px;
             &:hover {
               background-color: #d9ecff;
+              .toolbar {
+                display: flex;
+              }
             }
 
             .innerDraggableList {
@@ -344,12 +355,15 @@ export default {
                 display: flex;
                 align-items: center;
                 min-height: 50px;
-                padding: 27px 10px 10px 10px;
+                padding: 20px 10px 10px 10px;
                 background: #ecf5ff;
                 border: 1px dotted #909399;
                 border-radius: 4px;
                 &:hover {
                   background-color: #f1f1f1;
+                  .toolbar {
+                    display: flex;
+                  }
                 }
                 .dragTarget {
                   border: 0;
@@ -359,6 +373,7 @@ export default {
                 }
 
                 .toolbar {
+                  display: none;
                   z-index: 1;
                   position: absolute;
                   top: 0;
@@ -366,11 +381,11 @@ export default {
                   box-sizing: border-box;
                   width: 100%;
                   padding: 2px 2px 0 2px;
-                  display: flex;
+
                   justify-content: space-between;
                   div {
                     display: flex;
-                    width: 48px;
+                    width: fit-content;
                     justify-content: space-between;
                   }
                   .el-button {
@@ -378,7 +393,7 @@ export default {
                     width: 23px;
                     height: 23px;
                     padding: 0;
-                    margin: 0;
+                    margin: 0 3px 0 0;
                   }
                 }
               }
@@ -393,6 +408,7 @@ export default {
             }
 
             .toolbar {
+              display: none;
               z-index: 1;
               position: absolute;
               top: 0;
@@ -400,11 +416,10 @@ export default {
               box-sizing: border-box;
               width: 100%;
               padding: 2px 2px 0 2px;
-              display: flex;
               justify-content: space-between;
               div {
                 display: flex;
-                width: 73px;
+                width: fit-content;
                 justify-content: space-between;
               }
               .el-button {
@@ -412,7 +427,7 @@ export default {
                 width: 23px;
                 height: 23px;
                 padding: 0;
-                margin: 0;
+                margin: 0 3px 0 0;
               }
             }
           }

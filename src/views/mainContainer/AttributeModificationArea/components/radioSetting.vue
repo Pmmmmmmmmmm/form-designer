@@ -40,7 +40,14 @@ export default {
   },
   components: {},
   created() {
-    this.$emit('emitOpintions', this.options.contentOptions, this.currentItem.index)
+    //如果有存在的配置参数,就把组件内部的参数赋值为预先存在的参数
+    if (JSON.stringify(this.currentItem.options) != "{}") {
+      this.contentOptions = this.currentItem.options
+    } else {
+      //如果没有配置参数,则将默认值发送到父组件并渲染到radio.vue
+      this.$emit('emitOpintions', this.options, [this.currentItem.index, this.currentItem.innerIndex])
+    }
+
   },
   mounted() { },
   methods: { // 删除确认
@@ -54,7 +61,7 @@ export default {
           label: `value${this.options.contentOptions.length + 1}`,
           text: `选项${this.options.contentOptions.length + 1}`
         });
-      console.log(this.currentItem);
+
     }
   },
   watch: {
