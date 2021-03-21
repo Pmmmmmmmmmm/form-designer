@@ -86,24 +86,24 @@
 <script>
 // 引入主体的三块区域
 
-import draggable from "vuedraggable";
-import AttributeModificationArea from "./attributeModificationArea";
+import draggable from 'vuedraggable'
+import AttributeModificationArea from './attributeModificationArea'
 
 //表单组件
-import Cascader from "../../components/FormComponents/Cascader";
-import Checkbox from "../../components/FormComponents/Checkbox";
-import DatePicker from "../../components/FormComponents/Cascader";
-import Formswitch from "../../components/FormComponents/Formswitch";
-import Input from "../../components/FormComponents/Input";
-import InputNumber from "../../components/FormComponents/InputNumber";
-import Radio from "../../components/FormComponents/Radio";
-import Select from "../../components/FormComponents/Select";
-import Slider from "../../components/FormComponents/Slider";
-import TimePicker from "../../components/FormComponents/TimePicker";
+import Cascader from '../../components/FormComponents/Cascader'
+import Checkbox from '../../components/FormComponents/Checkbox'
+import DatePicker from '../../components/FormComponents/Cascader'
+import Formswitch from '../../components/FormComponents/Formswitch'
+import Input from '../../components/FormComponents/Input'
+import InputNumber from '../../components/FormComponents/InputNumber'
+import Radio from '../../components/FormComponents/Radio'
+import Select from '../../components/FormComponents/Select'
+import Slider from '../../components/FormComponents/Slider'
+import TimePicker from '../../components/FormComponents/TimePicker'
 
 // 引入表单组件
 export default {
-  name: "mainContainer",
+  name: 'mainContainer',
   data() {
     return {
       drag: false,
@@ -113,20 +113,20 @@ export default {
       currentOptions: {},
       //按钮数据源
       buttonData: [
-        { name: "单选框", id: "Radio", options: null },
-        { name: "多选框", id: "Checkbox", options: null },
-        { name: "输入框", id: "Input", options: null },
-        { name: "计数器", id: "InputNumber", options: null },
-        { name: "选择器", id: "Select", options: null },
-        { name: "级联选择器", id: "Cascader", options: null },
-        { name: "开关", id: "Formswitch", options: null },
-        { name: "滑块", id: "Slider", options: null },
-        { name: "时间选择", id: "TimePicker", options: null },
-        { name: "日期选择", id: "DatePicker", options: null },
+        { name: '单选框', id: 'Radio', options: null },
+        { name: '多选框', id: 'Checkbox', options: null },
+        { name: '输入框', id: 'Input', options: null },
+        { name: '计数器', id: 'InputNumber', options: null },
+        { name: '选择器', id: 'Select', options: null },
+        { name: '级联选择器', id: 'Cascader', options: null },
+        { name: '开关', id: 'Formswitch', options: null },
+        { name: '滑块', id: 'Slider', options: null },
+        { name: '时间选择', id: 'TimePicker', options: null },
+        { name: '日期选择', id: 'DatePicker', options: null }
       ],
       //渲染拖拽组件
       listdata: [
-        { name: "单选框", id: "Radio", options: {} },
+        {}
         // [
         //   { name: "单选框", id: "Radio", options: {} },
         // ],
@@ -134,45 +134,41 @@ export default {
 
       optionsA: {
         group: {
-          name: "site",
+          name: 'site',
           pull: 'clone',
           put: false
         },
 
         sort: false,
-        animation: "160",
-        dragClass: "dragClass",
-        ghostClass: "ghostClass",
-        chosenClass: "chosenClass",
-        forceFallback: true,
-
+        animation: '160',
+        dragClass: 'dragClass',
+        ghostClass: 'ghostClass',
+        chosenClass: 'chosenClass',
+        forceFallback: true
       },
       optionsB: {
-        group: "site",
-        animation: "160",
-        dragClass: "dragClass",
-        ghostClass: "ghostClass",
-        chosenClass: "chosenClass",
+        group: 'site',
+        animation: '160',
+        dragClass: 'dragClass',
+        ghostClass: 'ghostClass',
+        chosenClass: 'chosenClass',
         handle: '.handle',
-        forceFallback: true,
-
+        forceFallback: true
       },
 
       innerOptionsB: {
         group: {
-          name: "site",
-          pull: false,
-
+          name: 'site',
+          pull: false
         },
-        animation: "100",
-        dragClass: "dragClass",
-        ghostClass: "ghostClass",
-        chosenClass: "chosenClass",
+        animation: '100',
+        dragClass: 'dragClass',
+        ghostClass: 'ghostClass',
+        chosenClass: 'chosenClass',
         handle: '.handle',
-        forceFallback: true,
-
-      },
-    };
+        forceFallback: true
+      }
+    }
   },
   components: {
     AttributeModificationArea,
@@ -193,7 +189,17 @@ export default {
   methods: {
     //将属性设置模块返回的参数渲染到组件中
     emitOpintions() {
-      console.log(arguments);
+      if (arguments.length == 3) {
+        // this.listdata[arguments[1][0]][arguments[1][1]].options = arguments[0]
+        console.log('array')
+      } else if (arguments.length == 2) {
+        // this.listdata[arguments[1][0]].options = arguments[0]
+        // console.log('obj')
+      }
+      //
+
+      // console.log(this.listdata[arguments[1][0]])
+      // console.log(this.listdata)
     },
     //设置选中项
     setting() {
@@ -201,16 +207,16 @@ export default {
         this.currentItem = {
           id: this.listdata[arguments[0]].id,
           index: arguments[0],
-          options: this.listdata[arguments[0]].options,
-        };
+          options: this.listdata[arguments[0]].options
+        }
       }
       if (arguments.length == 2) {
         this.currentItem = {
           id: this.listdata[arguments[0]][arguments[1]].id,
           index: arguments[0],
           innerIndex: arguments[1],
-          options: this.listdata[arguments[0]][arguments[1]].options,
-        };
+          options: this.listdata[arguments[0]][arguments[1]].options
+        }
       }
     },
     //添加子元素
@@ -221,30 +227,30 @@ export default {
     //移除选中项
     confirm() {
       if (arguments.length == 1) {
-        this.listdata.splice(arguments[0], 1);
+        this.listdata.splice(arguments[0], 1)
       }
       if (arguments.length == 2) {
-        this.listdata[arguments[0]].splice(arguments[1], 1);
+        this.listdata[arguments[0]].splice(arguments[1], 1)
       }
       this.$forceUpdate()
-
     },
 
     //开始拖拽事件
     onStart() {
-      this.drag = true;
+      this.drag = true
     },
     //拖拽结束事件
     onEnd() {
-      this.drag = false;
+      this.drag = false
+      console.log(this.listdata)
     },
 
     //move回调方法
     onMove(e) {
-      e.dragged.classList.add("FCC")
-    },
-  },
-};
+      e.dragged.classList.add('FCC')
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>

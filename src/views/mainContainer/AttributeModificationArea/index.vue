@@ -1,26 +1,27 @@
 <template>
   <div class="AttributeModificationArea">
     <!-- 单选框设置 -->
-    <radio-setting v-if="currentItem.id=='Radio'" v-on="$listeners" v-bind="$attrs" :currentItem="currentItem" />
+    <!-- <radio-setting v-if="currentItem.id=='Radio'" v-on="$listeners" v-bind="$attrs" :currentItem="currentItem" /> -->
+    {{currentItem.id}}
+    {{currentItem.index}}
+    {{currentItem.innerIndex}}
   </div>
 </template>
 
 <script>
-import RadioSetting from './components/radioSetting';
+import RadioSetting from './components/radioSetting'
 export default {
-  name: "AttributeModificationArea",
+  name: 'AttributeModificationArea',
   props: ['currentItem'],
   data() {
-    return {};
+    return {}
   },
   components: { RadioSetting },
-  created() { },
-  mounted() { },
-  methods: {
-
-  },
+  created() {},
+  mounted() {},
+  methods: {},
   watch: {}
-};
+}
 </script>
 <style lang="less" scoped>
 .AttributeModificationArea {
