@@ -12,7 +12,7 @@
             <!-- 拖拽A -->
             <draggable v-model="buttonData" v-bind="optionsA" @start="onStart" @end="onEnd" :move="onMove">
               <transition-group>
-                <div class="formComponentButton" v-for="(item, index) in buttonData" :key="index">
+                <div class="formComponentButton" v-for="(item)  in buttonData" :key="item">
                   <el-button class="dragTarget">
                     <span>{{ item.name }}</span>
                   </el-button>
@@ -28,7 +28,7 @@
           <!-- 拖拽B -->
           <draggable v-bind="optionsB" v-model="listdata" @start="onStart" @end="onEnd" class="draggableArea">
             <transition-group>
-              <div class="FCC" v-for="(item,index) in listdata" :key="index">
+              <div class="FCC" v-for="(item,index) in listdata" :key="item">
                 <div class="toolbar">
                   <el-button type="primary" icon="el-icon-rank" class="handle" title="按此处拖动"></el-button>
                   <div>
@@ -39,7 +39,13 @@
                       @click.stop="addRow(index)"
                       title="点击在此行添加元素"
                     ></el-button>
-                    <el-button type="primary" icon="el-icon-setting" @click.stop="setting(index)" title="设置"></el-button>
+                    <el-button
+                      type="primary"
+                      v-if="!Array.isArray(item)"
+                      icon="el-icon-setting"
+                      @click.stop="setting(index)"
+                      title="设置"
+                    ></el-button>
                     <template>
                       <el-popconfirm title="确定删除此项吗？" @confirm="confirm(index)">
                         <el-button type="danger" slot="reference" icon="el-icon-delete"></el-button>
@@ -50,7 +56,7 @@
                 <div v-if="Array.isArray(item)" class="tabel">
                   <draggable v-bind="innerOptionsB" v-model="listdata[index]" @start="onStart" @end="onEnd">
                     <transition-group class="innerDraggableList">
-                      <div class="innerFCC" v-for="(innerItem,innerIndex) in item" :key="innerIndex">
+                      <div class="innerFCC" v-for="(innerItem,innerIndex) in item" :key="innerItem">
                         <div class="toolbar">
                           <el-button type="primary" icon="el-icon-rank" class="handle" title="按此处拖动"></el-button>
                           <div>
@@ -126,7 +132,6 @@ export default {
       ],
       //渲染拖拽组件
       listdata: [
-        {}
         // [
         //   { name: "单选框", id: "Radio", options: {} },
         // ],
@@ -334,106 +339,112 @@ export default {
         background-color: #c6e2ff;
         .draggableArea {
           width: 100%;
-          height: 50px;
-          .FCC {
-            z-index: 0;
-            position: relative;
-            min-height: 20px;
-            padding: 27px 8px 8px 8px;
-            background: #ecf5ff;
-            border: 2px dashed #909399;
-            border-radius: 4px;
-            margin-bottom: 5px;
-            &:hover {
-              background-color: #d9ecff;
-              .toolbar {
-                display: flex;
-              }
-            }
-
-            .innerDraggableList {
-              display: flex;
-              .innerFCC {
-                flex: 1;
-                z-index: 0;
-                max-width: 25%;
-                position: relative;
-                display: flex;
-                align-items: center;
-                min-height: 50px;
-                padding: 20px 10px 10px 10px;
-                background: #ecf5ff;
-                border: 1px dotted #909399;
-                border-radius: 4px;
-                &:hover {
-                  background-color: #f1f1f1;
-                  .toolbar {
-                    display: flex;
-                  }
-                }
-                .dragTarget {
-                  border: 0;
-                  span {
-                    font-size: 20px;
-                  }
-                }
-
+          & > span {
+            width: 100%;
+            min-height: 200px;
+            display: block;
+            padding: 0 0 100px 0;
+            .FCC {
+              z-index: 0;
+              position: relative;
+              min-height: 20px;
+              padding: 27px 8px 8px 8px;
+              background: #ecf5ff;
+              border: 2px dashed #909399;
+              border-radius: 4px;
+              margin-bottom: 5px;
+              overflow: hidden;
+              &:hover {
+                background-color: #d9ecff;
                 .toolbar {
-                  display: none;
-                  z-index: 1;
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  box-sizing: border-box;
-                  width: 100%;
-                  padding: 2px 2px 0 2px;
+                  display: flex;
+                }
+              }
 
-                  justify-content: space-between;
-                  div {
-                    display: flex;
-                    width: fit-content;
-                    justify-content: space-between;
+              .innerDraggableList {
+                display: flex;
+                justify-content: flex-start;
+                .innerFCC {
+                  flex: 1;
+                  z-index: 0;
+                  max-width: fit-content;
+                  position: relative;
+                  display: flex;
+                  align-items: center;
+                  padding: 15px;
+                  background: #ecf5ff;
+                  border: 1px dotted #909399;
+                  border-radius: 4px;
+                  margin-right: 5px;
+                  &:hover {
+                    background-color: #f1f1f1;
+                    .toolbar {
+                      display: flex;
+                    }
                   }
-                  .el-button {
-                    font-size: 16px;
-                    width: 23px;
-                    height: 23px;
-                    padding: 0;
-                    margin: 0 3px 0 0;
+                  .dragTarget {
+                    border: 0;
+                    span {
+                      font-size: 20px;
+                    }
+                  }
+
+                  .toolbar {
+                    display: none;
+                    z-index: 10;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    box-sizing: border-box;
+                    width: 100%;
+                    padding: 2px 2px 0 2px;
+
+                    justify-content: space-between;
+                    div {
+                      display: flex;
+                      width: fit-content;
+                      justify-content: space-between;
+                    }
+                    .el-button {
+                      font-size: 16px;
+                      width: 23px;
+                      height: 23px;
+                      padding: 0;
+                      margin: 0 3px 0 0;
+                    }
                   }
                 }
               }
-            }
-
-            //选择区域拖进时改变样式
-            .dragTarget {
-              border: 0;
-              span {
-                font-size: 20px;
+              //选择区域拖进时改变样式
+              .dragTarget {
+                border: 0;
+                span {
+                  font-size: 20px;
+                }
               }
-            }
 
-            .toolbar {
-              display: none;
-              z-index: 1;
-              position: absolute;
-              top: 0;
-              left: 0;
-              box-sizing: border-box;
-              width: 100%;
-              padding: 2px 2px 0 2px;
-              justify-content: space-between;
-              div {
-                display: flex;
-                width: fit-content;
+              .toolbar {
+                display: none;
+                z-index: 1;
+                position: absolute;
+                top: 0;
+                left: 0;
+                box-sizing: border-box;
+                width: 100%;
+                padding: 2px 2px 0 2px;
                 justify-content: space-between;
-              }
-              .el-button {
-                font-size: 16px;
-                width: 23px;
-                height: 23px;
-                padding: 0;
-                margin: 0 3px 0 0;
+                div {
+                  display: flex;
+                  width: fit-content;
+                  justify-content: space-between;
+                }
+                .el-button {
+                  font-size: 16px;
+                  width: 23px;
+                  height: 23px;
+                  padding: 0;
+                  margin: 0 3px 0 0;
+                }
               }
             }
           }
