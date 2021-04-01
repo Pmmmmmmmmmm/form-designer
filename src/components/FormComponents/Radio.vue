@@ -1,38 +1,47 @@
 <template>
   <div class="Radio">
-    <el-radio-group v-model="radio">
-      <el-radio v-for="(item, index) in options" :key="index" :label="item.label">{{item.text}}</el-radio>
+    <span>{{setting.title+'：'}}</span>
+    <el-radio-group v-model="setting.value">
+      <el-radio v-for="(item, index) in setting.options" :key="index" :label="item.value">{{item.label}}</el-radio>
     </el-radio-group>
   </div>
 </template>
 <script>
 export default {
-  name: "Radio",
-  props: ['index', 'currentOptions'],
+  name: 'Radio',
+  props: ['currentOptions'],
 
   data() {
     return {
-      options: [
-        { text: '选项1', label: 'valeu1' },
-        { text: '选项2', label: 'value2' },
-      ],
-      radio: '30',
-    };
+      setting: {
+        title: '未定义',
+        options: [
+          { label: '选项1', value: '10' },
+          { label: '选项2', value: '20' }
+        ],
+        value: '10'
+      }
+    }
   },
   created() {
-    this.currentOptions && (this.options = this.currentOptions)
+    // 如果传进来的currentOptions中包含设置参数则将其赋值到setting
+    this.currentOptions.options && (this.setting = this.currentOptions)
   },
-  methods: {
-  },
+  methods: {},
   watch: {
+    // 检查到currentOptions改变则立即赋值给setting
     currentOptions: {
-      handler: function () {
-        this.options = this.currentOptions;
+      handler: function(oldValue, newValue) {
+        // console.log(oldValue, newValue)
+
+        this.setting = newValue
+        this.$forceUpdate()
+        // console.log('change')
       },
       deep: true
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 </style>

@@ -12,7 +12,7 @@
             <!-- 拖拽A -->
             <draggable v-model="buttonData" v-bind="optionsA" @start="onStart" @end="onEnd" :move="onMove">
               <transition-group>
-                <div class="formComponentButton" v-for="(item)  in buttonData" :key="item">
+                <div class="formComponentButton" v-for="(item,index)  in buttonData" :key="item+''+index">
                   <el-button class="dragTarget">
                     <span>{{ item.name }}</span>
                   </el-button>
@@ -28,7 +28,8 @@
           <!-- 拖拽B -->
           <draggable v-bind="optionsB" v-model="listdata" @start="onStart" @end="onEnd" class="draggableArea">
             <transition-group>
-              <div class="FCC" v-for="(item,index) in listdata" :key="item">
+              <div class="FCC" v-for="(item,index) in listdata" :key="item+''+index">
+                <!-- 父级工具栏 -->
                 <div class="toolbar">
                   <el-button type="primary" icon="el-icon-rank" class="handle" title="按此处拖动"></el-button>
                   <div>
@@ -53,10 +54,12 @@
                     </template>
                   </div>
                 </div>
+                <!-- 子级 -->
                 <div v-if="Array.isArray(item)" class="tabel">
                   <draggable v-bind="innerOptionsB" v-model="listdata[index]" @start="onStart" @end="onEnd">
                     <transition-group class="innerDraggableList">
-                      <div class="innerFCC" v-for="(innerItem,innerIndex) in item" :key="innerItem">
+                      <div class="innerFCC" v-for="(innerItem,innerIndex) in item" :key="innerItem+''+innerIndex">
+                        <!-- 子级工具栏 -->
                         <div class="toolbar">
                           <el-button type="primary" icon="el-icon-rank" class="handle" title="按此处拖动"></el-button>
                           <div>
@@ -68,13 +71,14 @@
                             </template>
                           </div>
                         </div>
-                        <component :is="innerItem.id" :currentOptions="innerItem.options" :index="innerIndex"></component>
+                        <component :is="innerItem.type" :currentOptions="innerItem" :index="innerIndex"></component>
                       </div>
                     </transition-group>
                   </draggable>
                 </div>
+                <!-- 父级组件 -->
                 <div v-else>
-                  <component :is="item.id" :currentOptions="item.options" :index="index"></component>
+                  <component :is="item.type" :currentOptions="item" :index="index"></component>
                 </div>
               </div>
             </transition-group>
@@ -93,17 +97,18 @@
 // 引入主体的三块区域
 
 import draggable from 'vuedraggable'
-import AttributeModificationArea from './attributeModificationArea'
+import AttributeModificationArea from './attributeModificationArea/index'
 
 //表单组件
 import Cascader from '../../components/FormComponents/Cascader'
 import Checkbox from '../../components/FormComponents/Checkbox'
 import DatePicker from '../../components/FormComponents/Cascader'
-import Formswitch from '../../components/FormComponents/Formswitch'
-import Input from '../../components/FormComponents/Input'
+
+import Formswitch from '../../components/FormComponents/Formswitch' // switch组件名与switch关键字冲突需要单独处理
+import Input from '../../components/FormComponents/Input' // Input组件名与Input表单关键字冲突需要单独处理
 import InputNumber from '../../components/FormComponents/InputNumber'
 import Radio from '../../components/FormComponents/Radio'
-import Select from '../../components/FormComponents/Select'
+import Select from '../../components/FormComponents/Select' // Select组件名与Select表单关键字冲突需要单独处理
 import Slider from '../../components/FormComponents/Slider'
 import TimePicker from '../../components/FormComponents/TimePicker'
 
@@ -119,23 +124,19 @@ export default {
       currentOptions: {},
       //按钮数据源
       buttonData: [
-        { name: '单选框', id: 'Radio', options: null },
-        { name: '多选框', id: 'Checkbox', options: null },
-        { name: '输入框', id: 'Input', options: null },
-        { name: '计数器', id: 'InputNumber', options: null },
-        { name: '选择器', id: 'Select', options: null },
-        { name: '级联选择器', id: 'Cascader', options: null },
-        { name: '开关', id: 'Formswitch', options: null },
-        { name: '滑块', id: 'Slider', options: null },
-        { name: '时间选择', id: 'TimePicker', options: null },
-        { name: '日期选择', id: 'DatePicker', options: null }
+        { name: '单选框', type: 'radio' },
+        { name: '多选框', type: 'checkbox' },
+        { name: '输入框', type: 'Input' },
+        { name: '计数器', type: 'inputNumber' },
+        { name: '选择器', type: 'Select' },
+        { name: '级联选择器', type: 'cascader' },
+        { name: '开关', type: 'Formswitch' },
+        { name: '滑块', type: 'slider' },
+        { name: '时间选择', type: 'timePicker' },
+        { name: '日期选择', type: 'datePicker' }
       ],
       //渲染拖拽组件
-      listdata: [
-        // [
-        //   { name: "单选框", id: "Radio", options: {} },
-        // ],
-      ],
+      listdata: [],
 
       optionsA: {
         group: {
@@ -143,7 +144,6 @@ export default {
           pull: 'clone',
           put: false
         },
-
         sort: false,
         animation: '160',
         dragClass: 'dragClass',
@@ -194,33 +194,25 @@ export default {
   methods: {
     //将属性设置模块返回的参数渲染到组件中
     emitOpintions() {
-      if (arguments.length == 3) {
-        // this.listdata[arguments[1][0]][arguments[1][1]].options = arguments[0]
-        console.log('array')
-      } else if (arguments.length == 2) {
-        // this.listdata[arguments[1][0]].options = arguments[0]
-        // console.log('obj')
+      if (typeof arguments[arguments.length - 1] === 'undefined') {
+        this.listdata[arguments[1]] = JSON.parse(JSON.stringify(arguments[0]))
+      } else if (typeof arguments[arguments.length - 1] != 'undefined') {
+        this.listdata[arguments[1]][arguments[2]] = JSON.parse(JSON.stringify(arguments[0]))
       }
-      //
-
-      // console.log(this.listdata[arguments[1][0]])
-      // console.log(this.listdata)
     },
     //设置选中项
     setting() {
       if (arguments.length == 1) {
         this.currentItem = {
-          id: this.listdata[arguments[0]].id,
-          index: arguments[0],
-          options: this.listdata[arguments[0]].options
+          type: this.listdata[arguments[0]].type,
+          index: arguments[0]
         }
       }
       if (arguments.length == 2) {
         this.currentItem = {
-          id: this.listdata[arguments[0]][arguments[1]].id,
+          type: this.listdata[arguments[0]][arguments[1]].type,
           index: arguments[0],
-          innerIndex: arguments[1],
-          options: this.listdata[arguments[0]][arguments[1]].options
+          innerIndex: arguments[1]
         }
       }
     },
@@ -247,7 +239,6 @@ export default {
     //拖拽结束事件
     onEnd() {
       this.drag = false
-      console.log(this.listdata)
     },
 
     //move回调方法

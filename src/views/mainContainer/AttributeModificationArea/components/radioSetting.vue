@@ -1,26 +1,53 @@
 <template>
-  <div class="radioSetting">
-    <h4>选项设置：</h4>
-    <ul class="radioOptions">
-      <li>
-        <el-button type="primary" icon="el-icon-plus" :disabled="options.contentOptions.length == 4" @click="addOptions"></el-button>
-      </li>
-      <li v-for="(item, index) in options.contentOptions.length" :key="index">
-        <div class="title">
-          <span>项名：</span>
+  <div class="radio-setting" v-if="currentItem.type=='radio'">
+    <el-tabs v-model="activeName" type="card">
+      <el-tab-pane label="通用设置：" name="first">
+        <div class="common">
+          <div class="item">
+            <span>标题：</span>
+            <el-input v-model="radioSetting.title"></el-input>
+          </div>
+          <div class="item">
+            <span>尺寸：</span>
+            <el-select v-model="radioSetting.props.size" placeholder="请选择尺寸">
+              <el-option label="普通尺寸" value="medium" />
+              <el-option label="小尺寸" value="small " />
+              <el-option label="迷你" value="mini" />
+            </el-select>
+          </div>
+          <div class="item">
+            <span>字段名：</span>
+            <el-input v-model="radioSetting.field"></el-input>
+          </div>
+          <div class="item">
+            <span>预设值：</span>
+            <el-input v-model="radioSetting.value"></el-input>
+          </div>
         </div>
-        <el-input v-model="options.contentOptions[index].text"></el-input>
-        <div class="title">
-          <span>值：</span>
-        </div>
-        <el-input v-model="options.contentOptions[index].label"></el-input>
-        <div class="del">
-          <el-popconfirm title="确定删除此项吗？" @confirm="confirm(index)">
-            <el-button type="danger" slot="reference" icon="el-icon-delete"></el-button>
-          </el-popconfirm>
-        </div>
-      </li>
-    </ul>
+      </el-tab-pane>
+      <el-tab-pane label="选项设置：" name="second">
+        <ul class="radio-options">
+          <li>
+            <el-button type="primary" icon="el-icon-plus" :disabled="radioSetting.options.length == 4" @click="addOptions"></el-button>
+          </li>
+          <li v-for="(item, index) in radioSetting.options.length" :key="index">
+            <div class="title">
+              <span>项名：</span>
+            </div>
+            <el-input v-model="radioSetting.options[index].label"></el-input>
+            <div class="title">
+              <span>值：</span>
+            </div>
+            <el-input v-model="radioSetting.options[index].value"></el-input>
+            <div class="del">
+              <el-popconfirm title="确定删除此项吗？" @confirm="confirm(index)">
+                <el-button type="danger" slot="reference" icon="el-icon-delete"></el-button>
+              </el-popconfirm>
+            </div>
+          </li>
+        </ul>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -30,44 +57,51 @@ export default {
   props: ['currentItem'],
   data() {
     return {
-      //单选框
-      options: {
-        contentOptions: [
-          { label: 'value1', text: '选项1' },
-          { label: 'value2', text: '选项2' }
-        ]
+      activeName: 'first',
+      radioSetting: {
+        type: 'radio',
+        title: '',
+        field: 'is_postage',
+        value: '1',
+        options: [
+          { value: '1', label: '选项1' },
+          { value: '2', label: '选项2' }
+        ],
+        props: {
+          size: ''
+        }
       }
     }
   },
   components: {},
   created() {
     //如果有存在的配置参数,就把组件内部的参数赋值为预先存在的参数
-    if (JSON.stringify(this.currentItem.options) != '{}') {
-      this.contentOptions = this.currentItem.options
-    } else {
-      //如果没有配置参数,则将默认值发送到父组件并渲染到radio.vue
-      this.$emit('emitOpintions', this.options, this.currentItem.index, this.currentItem.innerIndex)
-      // console.log([this.currentItem.index, this.currentItem.innerIndex])
-    }
+    // if (JSON.stringify(this.currentItem) != '{}') {
+    //   this.contentOptions = this.currentItem.options
+    // } else {
+    //   //如果没有配置参数,则将默认值发送到父组件并渲染到radio.vue
+    //   this.$emit('emitOpintions', this.options, this.currentItem.index, this.currentItem.innerIndex)
+    // }
   },
   mounted() {},
   methods: {
     // 删除确认
     confirm(index) {
-      this.options.contentOptions.splice(index, 1)
+      this.radioSetting.options.splice(index, 1)
     },
     //添加选项
     addOptions() {
-      this.options.contentOptions.push({
-        label: `value${this.options.contentOptions.length + 1}`,
-        text: `选项${this.options.contentOptions.length + 1}`
+      this.radioSetting.options.push({
+        value: `value${this.radioSetting.options.length + 1}`,
+        label: `选项${this.radioSetting.options.length + 1}`
       })
     }
   },
   watch: {
-    radioOptions: {
+    radioSetting: {
       handler(oldValue, newValue) {
-        this.$emit('emitOpintions', newValue.contentOptions, this.currentItem.index)
+        console.log('newValue')
+        this.$emit('emitOpintions', newValue, this.currentItem.index, this.currentItem.innerIndex)
       },
       deep: true
     }
@@ -75,42 +109,67 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.radioOptions {
-  width: 90%;
-  margin: 0 auto;
-  padding: 0;
-  margin-bottom: 150px;
-  li {
-    position: relative;
-    list-style: none;
-    background-color: #ecf5ff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-    margin: 10px 0;
-    border: 1px solid #909399;
-    border-radius: 4px;
-    &:first-child {
-      .el-button {
-        width: 100%;
-        height: 50px;
-        font-size: 25px;
+.radio-setting {
+  min-height: 100%;
+  .common {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      span {
+        font-size: 15px;
+        margin: 15px 10px 5px 5px;
       }
     }
-    .title {
-      padding-left: 10px;
-      height: 34px;
-      line-height: 34px;
-      margin: 0;
-    }
-    .del {
-      position: absolute;
-      top: 2px;
-      right: 2px;
-      .el-button {
-        width: 30px;
-        height: 30px;
-        padding: 0;
+  }
+  .radio-options {
+    margin: 0 auto;
+    padding: 10px;
+
+    li {
+      position: relative;
+      list-style: none;
+      background-color: #ecf5ff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+      margin: 10px 0;
+      border: 1px solid #909399;
+      border-radius: 4px;
+      &:first-child {
+        .el-button {
+          width: 100%;
+          height: 50px;
+          font-size: 25px;
+        }
+      }
+      .title {
+        padding-left: 10px;
+        height: 34px;
+        line-height: 34px;
+        margin: 0;
+      }
+      .del {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        .el-button {
+          width: 30px;
+          height: 30px;
+          padding: 0;
+        }
       }
     }
+  }
+}
+/deep/.el-tabs__nav {
+  width: 100%;
+  .el-tabs__item {
+    width: 50%;
+    text-align: center;
   }
 }
 </style>
