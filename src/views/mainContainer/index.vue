@@ -11,7 +11,7 @@
             <h4>基础表单组件</h4>
             <!-- 拖拽A -->
             <draggable v-model="buttonData" v-bind="optionsA" @start="onStart" @end="onEnd" :move="onMove">
-              <transition-group>
+              <transition-group class="fromspan">
                 <div class="formComponentButton" v-for="(item,index)  in buttonData" :key="item+''+index">
                   <el-button class="dragTarget">
                     <span>{{ item.name }}</span>
@@ -26,7 +26,15 @@
         <!-- EditingArea -->
         <div class="editingArea">
           <!-- 拖拽B -->
-          <draggable v-bind="optionsB" v-model="listdata" @start="onStart" @end="onEnd" class="draggableArea">
+          <draggable
+            v-bind="optionsB"
+            v-if="condition"
+            v-model="listdata"
+            @start="onStart"
+            @end="onEnd"
+            :move="onMove"
+            class="draggableArea"
+          >
             <transition-group>
               <div class="FCC" v-for="(item,index) in listdata" :key="item+''+index">
                 <!-- 父级工具栏 -->
@@ -97,7 +105,7 @@
 // 引入主体的三块区域
 
 import draggable from 'vuedraggable'
-import AttributeModificationArea from './attributeModificationArea/index'
+import AttributeModificationArea from './AttributeModificationArea'
 
 //表单组件
 import Cascader from '../../components/FormComponents/Cascader'
@@ -172,7 +180,8 @@ export default {
         chosenClass: 'chosenClass',
         handle: '.handle',
         forceFallback: true
-      }
+      },
+      condition: true //用于拖拽区域强制更新
     }
   },
   components: {
@@ -194,11 +203,18 @@ export default {
   methods: {
     //将属性设置模块返回的参数渲染到组件中
     emitOpintions() {
+      this.condition = false //拖拽区域销毁
+
       if (typeof arguments[arguments.length - 1] === 'undefined') {
         this.listdata[arguments[1]] = JSON.parse(JSON.stringify(arguments[0]))
       } else if (typeof arguments[arguments.length - 1] != 'undefined') {
         this.listdata[arguments[1]][arguments[2]] = JSON.parse(JSON.stringify(arguments[0]))
       }
+
+      // 拖拽区域生成，强制更新
+      this.$nextTick(function() {
+        this.condition = true
+      })
     },
     //设置选中项
     setting() {
@@ -218,7 +234,7 @@ export default {
     },
     //添加子元素
     addRow(index) {
-      this.listdata[index] = [this.listdata[index]]
+      this.listdata[index] = JSON.parse(JSON.stringify([this.listdata[index]]))
       this.$forceUpdate()
     },
     //移除选中项
@@ -238,12 +254,26 @@ export default {
     },
     //拖拽结束事件
     onEnd() {
+      this.condition = false //拖拽区域销毁
       this.drag = false
+      // 拖拽区域生成，强制更新
+      this.$nextTick(function() {
+        this.condition = true
+      })
     },
 
     //move回调方法
     onMove(e) {
-      e.dragged.classList.add('FCC')
+      // 元素从选择区进入编辑区时添加 适配的css
+      console.log(e)
+      if (e.from.className === 'fromspan') {
+        e.dragged.classList.add('FCC')
+      }
+      // 如果拖动元素本事是嵌套元素 并且 拖动目标的也为嵌套元素内部则禁止拖拽
+      if (Array.isArray(e.draggedContext.element) && e.related.className === 'innerFCC') {
+        return false
+      }
+      return true
     }
   }
 }
