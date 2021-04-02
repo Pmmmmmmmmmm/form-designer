@@ -95,7 +95,7 @@
       </div>
       <div class="rightAside">
         <!-- 属性编辑区域 -->
-        <AttributeModificationArea :currentItem="currentItem" @emitOpintions="emitOpintions" />
+        <attribute-modification-area :currentItem="currentItem" @emitOpintions="emitOpintions" />
       </div>
     </div>
   </div>
@@ -111,7 +111,6 @@ import AttributeModificationArea from './AttributeModificationArea'
 import Cascader from '../../components/FormComponents/Cascader'
 import Checkbox from '../../components/FormComponents/Checkbox'
 import DatePicker from '../../components/FormComponents/Cascader'
-
 import Formswitch from '../../components/FormComponents/Formswitch' // switch组件名与switch关键字冲突需要单独处理
 import Input from '../../components/FormComponents/Input' // Input组件名与Input表单关键字冲突需要单独处理
 import InputNumber from '../../components/FormComponents/InputNumber'
@@ -145,7 +144,7 @@ export default {
       ],
       //渲染拖拽组件
       listdata: [],
-
+      // 按钮拖拽区设置
       optionsA: {
         group: {
           name: 'site',
@@ -159,6 +158,7 @@ export default {
         chosenClass: 'chosenClass',
         forceFallback: true
       },
+      // 编辑拖拽区设置
       optionsB: {
         group: 'site',
         animation: '160',
@@ -168,7 +168,7 @@ export default {
         handle: '.handle',
         forceFallback: true
       },
-
+      // 内部编辑拖拽区设置
       innerOptionsB: {
         group: {
           name: 'site',
@@ -218,19 +218,22 @@ export default {
     },
     //设置选中项
     setting() {
-      if (arguments.length == 1) {
-        this.currentItem = {
-          type: this.listdata[arguments[0]].type,
-          index: arguments[0]
-        }
-      }
-      if (arguments.length == 2) {
-        this.currentItem = {
-          type: this.listdata[arguments[0]][arguments[1]].type,
-          index: arguments[0],
-          innerIndex: arguments[1]
-        }
-      }
+      // 清空当前的对象
+      this.currentItem = {}
+      let i = arguments[0]
+      let j = arguments[1]
+      arguments.length === 1
+        ? // 点击父级组件设置的时候
+          this.$nextTick(function() {
+            this.currentItem = this.listdata[i]
+            this.currentItem.index = i
+          })
+        : // 点击子级组件设置的时候
+          this.$nextTick(function() {
+            this.currentItem = this.listdata[i][j]
+            this.currentItem.index = i
+            this.currentItem.innerIndex = j
+          })
     },
     //添加子元素
     addRow(index) {
@@ -239,23 +242,29 @@ export default {
     },
     //移除选中项
     confirm() {
-      if (arguments.length == 1) {
+      if (arguments.length === 1) {
         this.listdata.splice(arguments[0], 1)
       }
-      if (arguments.length == 2) {
+      if (arguments.length === 2) {
         this.listdata[arguments[0]].splice(arguments[1], 1)
+        if (this.listdata[arguments[0]].length === 0) {
+          this.listdata.splice(arguments[0], 1)
+        }
       }
       this.$forceUpdate()
     },
 
     //开始拖拽事件
     onStart() {
-      this.drag = true
+      // this.drag = true
     },
     //拖拽结束事件
     onEnd() {
+      this.currentItem = {}
+
+      // 清除表单属性设置参数
       this.condition = false //拖拽区域销毁
-      this.drag = false
+      // this.drag = false
       // 拖拽区域生成，强制更新
       this.$nextTick(function() {
         this.condition = true
@@ -265,11 +274,11 @@ export default {
     //move回调方法
     onMove(e) {
       // 元素从选择区进入编辑区时添加 适配的css
-      console.log(e)
+
       if (e.from.className === 'fromspan') {
         e.dragged.classList.add('FCC')
       }
-      // 如果拖动元素本事是嵌套元素 并且 拖动目标的也为嵌套元素内部则禁止拖拽
+      // 如果  拖动元素本身是嵌套元素 并且 拖动目标的也为嵌套元素内部  则禁止拖拽
       if (Array.isArray(e.draggedContext.element) && e.related.className === 'innerFCC') {
         return false
       }

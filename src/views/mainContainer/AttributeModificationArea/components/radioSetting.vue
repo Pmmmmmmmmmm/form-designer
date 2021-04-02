@@ -1,5 +1,5 @@
-<template>
-  <div class="radio-setting" v-if="currentItem.type=='radio'">
+<template >
+  <div class="radio-setting">
     <el-tabs v-model="activeName" type="card">
       <el-tab-pane label="通用设置：" name="first">
         <div class="common">
@@ -75,13 +75,8 @@ export default {
   },
   components: {},
   created() {
-    //如果有存在的配置参数,就把组件内部的参数赋值为预先存在的参数
-    // if (JSON.stringify(this.currentItem) != '{}') {
-    //   this.contentOptions = this.currentItem.options
-    // } else {
-    //   //如果没有配置参数,则将默认值发送到父组件并渲染到radio.vue
-    //   this.$emit('emitOpintions', this.options, this.currentItem.index, this.currentItem.innerIndex)
-    // }
+    // 组件内部的参数赋值为预先存在的参数
+    Object.assign(this.radioSetting, this.currentItem)
   },
   mounted() {},
   methods: {
@@ -99,8 +94,9 @@ export default {
   },
   watch: {
     radioSetting: {
-      handler(oldValue, newValue) {
-        console.log('newValue')
+      // 由于监听的是obj类型，所以newValue/oldValue都引用其地址，值相同
+      handler(newValue, oldValue) {
+        console.log(arguments)
         this.$emit('emitOpintions', newValue, this.currentItem.index, this.currentItem.innerIndex)
       },
       deep: true

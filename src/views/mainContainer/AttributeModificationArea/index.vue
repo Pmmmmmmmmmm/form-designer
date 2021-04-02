@@ -1,7 +1,7 @@
 <template>
   <div class="AttributeModificationArea">
     <!-- 单选框设置 -->
-    <radio-setting v-bind="$attrs" v-on="$listeners" />
+    <radio-setting v-if="currentItem.type=='radio'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
   </div>
 </template>
 
@@ -9,15 +9,14 @@
 import RadioSetting from './components/radioSetting'
 export default {
   name: 'AttributeModificationArea',
-
+  props: ['currentItem'],
   data() {
     return {}
   },
   components: { RadioSetting },
   created() {},
   mounted() {},
-  methods: {},
-  watch: {}
+  methods: {}
 }
 </script>
 <style lang="less" scoped>
