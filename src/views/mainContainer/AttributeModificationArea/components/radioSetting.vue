@@ -96,7 +96,6 @@ export default {
     radioSetting: {
       // 由于监听的是obj类型，所以newValue/oldValue都引用其地址，值相同
       handler(newValue, oldValue) {
-        console.log(arguments)
         this.$emit('emitOpintions', newValue, this.currentItem.index, this.currentItem.innerIndex)
       },
       deep: true

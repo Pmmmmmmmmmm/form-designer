@@ -35,7 +35,7 @@ export default {
         // console.log(oldValue, newValue)
 
         this.setting = newValue
-        this.$forceUpdate()
+
         // console.log('change')
       },
       deep: true

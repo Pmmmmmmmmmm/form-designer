@@ -112,7 +112,7 @@ import Cascader from '../../components/FormComponents/Cascader'
 import Checkbox from '../../components/FormComponents/Checkbox'
 import DatePicker from '../../components/FormComponents/Cascader'
 import Formswitch from '../../components/FormComponents/Formswitch' // switch组件名与switch关键字冲突需要单独处理
-import Input from '../../components/FormComponents/Input' // Input组件名与Input表单关键字冲突需要单独处理
+import Fd_Input from '../../components/FormComponents/Input' // Input组件名与Input表单关键字冲突需要单独处理
 import InputNumber from '../../components/FormComponents/InputNumber'
 import Radio from '../../components/FormComponents/Radio'
 import Select from '../../components/FormComponents/Select' // Select组件名与Select表单关键字冲突需要单独处理
@@ -133,7 +133,7 @@ export default {
       buttonData: [
         { name: '单选框', type: 'radio' },
         { name: '多选框', type: 'checkbox' },
-        { name: '输入框', type: 'Input' },
+        { name: '输入框', type: 'Fd_Input' },
         { name: '计数器', type: 'inputNumber' },
         { name: '选择器', type: 'Select' },
         { name: '级联选择器', type: 'cascader' },
@@ -189,7 +189,7 @@ export default {
     //表单组件
     Radio,
     Checkbox,
-    Input,
+    Fd_Input,
     InputNumber,
     Select,
     Cascader,
@@ -211,7 +211,7 @@ export default {
         this.listdata[arguments[1]][arguments[2]] = JSON.parse(JSON.stringify(arguments[0]))
       }
 
-      // 拖拽区域生成，强制更新
+      // // 拖拽区域生成，强制更新
       this.$nextTick(function() {
         this.condition = true
       })
@@ -260,7 +260,6 @@ export default {
     },
     //拖拽结束事件
     onEnd() {
-      console.log(this.listdata)
       this.currentItem = {}
 
       // 清除表单属性设置参数
