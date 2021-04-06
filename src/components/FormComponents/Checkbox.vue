@@ -1,20 +1,44 @@
 <template>
   <div class="Checkbox">
-    <el-checkbox-group v-model="checkList">
-      <el-checkbox label="复选框 A"></el-checkbox>
-      <el-checkbox label="复选框 B"></el-checkbox>
-      <el-checkbox label="复选框 C"></el-checkbox>
+    <span>{{setting.title+'：'}}</span>
+    <el-checkbox-group v-model="setting.value">
+      <el-checkbox v-for="(item, index) in setting.options" :key="index" :label="item"></el-checkbox>
     </el-checkbox-group>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Checkbox",
+  name: 'Checkbox',
+  props: ['currentOptions'],
   data() {
     return {
-      checkList: ["选中且禁用", "复选框 A"],
-    };
+      setting: {
+        title: '请输入标题',
+        options: ['选项1', '选项2'],
+        value: []
+      }
+    }
   },
-};
+  created() {
+    // 如果传进来的currentOptions中包含设置参数则将其赋值到setting
+    this.currentOptions.options && (this.setting = this.currentOptions)
+  },
+  methods: {},
+  watch: {
+    // 检查到currentOptions改变则立即赋值给setting
+    currentOptions: {
+      handler: function(oldValue, newValue) {
+        this.setting = newValue
+        this.$forceUpdate()
+      },
+      deep: true
+    }
+  }
+}
 </script>
+<style lang="less" scoped>
+.Checkbox {
+  display: flex;
+}
+</style>

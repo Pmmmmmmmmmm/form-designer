@@ -1,19 +1,22 @@
 <template>
   <div class="AttributeModificationArea">
     <!-- 单选框设置 -->
-    <radio-setting v-if="currentItem.type=='radio'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
+    <radio-setting v-if="currentItem.type==='radio'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
+    <!-- 多选框设置 -->
+    <checkbox-setting v-if="currentItem.type==='checkbox'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
   </div>
 </template>
 
 <script>
 import RadioSetting from './components/radioSetting'
+import CheckboxSetting from './components/checkboxSetting'
 export default {
   name: 'AttributeModificationArea',
   props: ['currentItem'],
   data() {
     return {}
   },
-  components: { RadioSetting },
+  components: { RadioSetting, CheckboxSetting },
   created() {},
   mounted() {},
   methods: {}

@@ -14,7 +14,7 @@ export default {
   data() {
     return {
       setting: {
-        title: '未定义',
+        title: '请输入标题',
         options: [
           { label: '选项1', value: '10' },
           { label: '选项2', value: '20' }

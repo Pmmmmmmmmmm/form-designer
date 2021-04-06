@@ -1,44 +1,36 @@
 <template >
-  <div class="radio-setting">
+  <div class="checkboxSetting">
     <el-tabs v-model="activeName" type="card">
       <el-tab-pane label="通用设置：" name="first">
         <div class="common">
           <div class="item">
             <span>标题：</span>
-            <el-input v-model="radioSetting.title"></el-input>
+            <el-input v-model="checkboxSetting.title"></el-input>
           </div>
           <div class="item">
             <span>尺寸：</span>
-            <el-select v-model="radioSetting.props.size" placeholder="请选择尺寸">
+            <el-select v-model="checkboxSetting.props.size" placeholder="请选择尺寸">
               <el-option label="普通尺寸" value="medium" />
-              <el-option label="小尺寸" value="small " />
+              <el-option label="小尺寸" value="small" />
               <el-option label="迷你" value="mini" />
             </el-select>
           </div>
           <div class="item">
             <span>字段名：</span>
-            <el-input v-model="radioSetting.field"></el-input>
-          </div>
-          <div class="item">
-            <span>预设值：</span>
-            <el-input v-model="radioSetting.value"></el-input>
+            <el-input v-model="checkboxSetting.field"></el-input>
           </div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="选项设置：" name="second">
         <ul class="radio-options">
           <li>
-            <el-button type="primary" icon="el-icon-plus" :disabled="radioSetting.options.length == 4" @click="addOptions"></el-button>
+            <el-button type="primary" icon="el-icon-plus" :disabled="checkboxSetting.options.length == 5" @click="addOptions"></el-button>
           </li>
-          <li v-for="(item, index) in radioSetting.options.length" :key="index">
+          <li v-for="(item, index) in checkboxSetting.options" :key="index">
             <div class="title">
               <span>项名：</span>
             </div>
-            <el-input v-model="radioSetting.options[index].label"></el-input>
-            <div class="title">
-              <span>值：</span>
-            </div>
-            <el-input v-model="radioSetting.options[index].value"></el-input>
+            <el-input v-model="checkboxSetting.options[index]"></el-input>
             <div class="del">
               <el-popconfirm title="确定删除此项吗？" @confirm="confirm(index)">
                 <el-button type="danger" slot="reference" icon="el-icon-delete"></el-button>
@@ -53,20 +45,17 @@
 
 <script>
 export default {
-  name: 'radioSetting',
+  name: 'checkboxSetting',
   props: ['currentItem'],
   data() {
     return {
       activeName: 'first',
-      radioSetting: {
-        type: 'radio',
+      checkboxSetting: {
+        type: 'checkbox',
         title: '请输入标题',
         field: 'is_postage',
-        value: '1',
-        options: [
-          { value: '1', label: '选项1' },
-          { value: '2', label: '选项2' }
-        ],
+        value: [],
+        options: ['选项1', '选项2'],
         props: {
           size: ''
         }
@@ -76,24 +65,21 @@ export default {
   components: {},
   created() {
     // 组件内部的参数赋值为预先存在的参数
-    Object.assign(this.radioSetting, this.currentItem)
+    Object.assign(this.checkboxSetting, this.currentItem)
   },
   mounted() {},
   methods: {
     // 删除确认
     confirm(index) {
-      this.radioSetting.options.splice(index, 1)
+      this.checkboxSetting.options.splice(index, 1)
     },
     //添加选项
     addOptions() {
-      this.radioSetting.options.push({
-        value: `value${this.radioSetting.options.length + 1}`,
-        label: `选项${this.radioSetting.options.length + 1}`
-      })
+      this.checkboxSetting.options.push(`选项${this.checkboxSetting.options.length + 1}`)
     }
   },
   watch: {
-    radioSetting: {
+    checkboxSetting: {
       // 由于监听的是obj类型，所以newValue/oldValue都引用其地址，值相同
       handler(newValue, oldValue) {
         console.log(arguments)
@@ -105,7 +91,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.radio-setting {
+.checkboxSetting {
   min-height: 100%;
   .common {
     box-sizing: border-box;

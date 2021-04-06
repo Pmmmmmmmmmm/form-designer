@@ -260,6 +260,7 @@ export default {
     },
     //拖拽结束事件
     onEnd() {
+      console.log(this.listdata)
       this.currentItem = {}
 
       // 清除表单属性设置参数
