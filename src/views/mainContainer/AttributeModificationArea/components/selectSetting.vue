@@ -1,15 +1,15 @@
 <template >
-  <div class="radio-setting">
+  <div class="select-setting">
     <el-tabs v-model="activeName" type="card">
-      <el-tab-pane label="通用设置：" name="first">
+      <el-tab-pane label="通用设置" name="first">
         <div class="common">
           <div class="item">
             <span>标题：</span>
-            <el-input v-model="radioSetting.title"></el-input>
+            <el-input v-model="selectSetting.title"></el-input>
           </div>
           <div class="item">
             <span>尺寸：</span>
-            <el-select v-model="radioSetting.props.size" placeholder="请选择尺寸">
+            <el-select v-model="selectSetting.props.size" placeholder="请选择尺寸">
               <el-option label="普通尺寸" value="medium" />
               <el-option label="小尺寸" value="small " />
               <el-option label="迷你" value="mini" />
@@ -17,28 +17,28 @@
           </div>
           <div class="item">
             <span>字段名：</span>
-            <el-input v-model="radioSetting.field"></el-input>
+            <el-input v-model="selectSetting.field"></el-input>
           </div>
           <div class="item">
             <span>预设值：</span>
-            <el-input v-model="radioSetting.value"></el-input>
+            <el-input v-model="selectSetting.value"></el-input>
           </div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="选项设置：" name="second">
-        <ul class="radio-options">
+        <ul class="select-options">
           <li>
-            <el-button type="primary" icon="el-icon-plus" :disabled="radioSetting.options.length == 4" @click="addOptions"></el-button>
+            <el-button type="primary" icon="el-icon-plus" :disabled="selectSetting.options.length == 4" @click="addOptions"></el-button>
           </li>
-          <li v-for="(item, index) in radioSetting.options.length" :key="index">
+          <li v-for="(item, index) in selectSetting.options.length" :key="index">
             <div class="title">
               <span>项名：</span>
             </div>
-            <el-input v-model="radioSetting.options[index].label"></el-input>
+            <el-input v-model="selectSetting.options[index].label"></el-input>
             <div class="title">
               <span>值：</span>
             </div>
-            <el-input v-model="radioSetting.options[index].value"></el-input>
+            <el-input v-model="selectSetting.options[index].value"></el-input>
             <div class="del">
               <el-popconfirm title="确定删除此项吗？" @confirm="confirm(index)">
                 <el-button type="danger" slot="reference" icon="el-icon-delete"></el-button>
@@ -47,13 +47,33 @@
           </li>
         </ul>
       </el-tab-pane>
+      <el-tab-pane label="下拉框设置" name="third">
+        <div class="common">
+          <div class="item">
+            <span>是否多选：</span>
+            <el-input v-model="selectSetting.props.multiple"></el-input>
+          </div>
+          <div class="item">
+            <span>是否禁用：</span>
+            <el-input v-model="selectSetting.props.disabled"></el-input>
+          </div>
+          <div class="item">
+            <span>是否可以清空选项：</span>
+            <el-input v-model="selectSetting.props.clearable"></el-input>
+          </div>
+          <div class="item">
+            <span>占位符：</span>
+            <el-input v-model="selectSetting.props.placeholder"></el-input>
+          </div>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'radioSetting',
+  name: 'selectSetting',
   props: ['currentItem'],
   data() {
     return {
@@ -80,26 +100,31 @@ export default {
   components: {},
   created() {
     // 组件内部的参数赋值为预先存在的参数
-    Object.assign(this.radioSetting, this.currentItem)
+    Object.assign(this.selectSetting, this.currentItem)
   },
   mounted() {},
   methods: {
     // 删除确认
     confirm(index) {
-      this.radioSetting.options.splice(index, 1)
+      this.selectSetting.options.splice(index, 1)
     },
     //添加选项
     addOptions() {
-      this.radioSetting.options.push({
-        value: `value${this.radioSetting.options.length + 1}`,
-        label: `选项${this.radioSetting.options.length + 1}`
+      this.selectSetting.options.push({
+        value: `value${this.selectSetting.options.length + 1}`,
+        label: `选项${this.selectSetting.options.length + 1}`
       })
     }
   },
   watch: {
-    radioSetting: {
+    selectSetting: {
       // 由于监听的是obj类型，所以newValue/oldValue都引用其地址，值相同
       handler(newValue, oldValue) {
+        // 改为计数器后弃用
+        // if (!isNaN(this.selectSetting.props.min) && !isNaN(this.selectSetting.props.max)) {
+        //   this.$emit('emitOpintions', newValue, this.currentItem.index, this.currentItem.innerIndex)
+        // }
+
         this.$emit('emitOpintions', newValue, this.currentItem.index, this.currentItem.innerIndex)
       },
       deep: true
@@ -108,7 +133,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.radio-setting {
+.select-setting {
   min-height: 100%;
   .common {
     box-sizing: border-box;
@@ -126,7 +151,7 @@ export default {
       }
     }
   }
-  .radio-options {
+  .select-options {
     margin: 0 auto;
     padding: 10px;
 
@@ -166,8 +191,10 @@ export default {
 }
 /deep/.el-tabs__nav {
   width: 100%;
+  display: flex;
   .el-tabs__item {
-    width: 50%;
+    flex: 1;
+    padding: 0 !important ;
     text-align: center;
   }
 }

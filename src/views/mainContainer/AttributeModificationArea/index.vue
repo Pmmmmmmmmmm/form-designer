@@ -13,6 +13,8 @@
       v-on="$listeners"
       :currentItem="currentItem"
     />
+    <!-- 下拉框设置 -->
+    <select-setting v-else-if="currentItem.type==='Fd_Select'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
     <div class="other" v-else>请选择具体组件</div>
   </div>
 </template>
@@ -22,13 +24,15 @@ import RadioSetting from './components/radioSetting'
 import CheckboxSetting from './components/checkboxSetting'
 import InputSetting from './components/inputSetting'
 import InputNumberSetting from './components/inputNumberSetting'
+import SelectSetting from './components/selectSetting'
+
 export default {
   name: 'AttributeModificationArea',
   props: ['currentItem'],
   data() {
     return {}
   },
-  components: { RadioSetting, CheckboxSetting, InputSetting, InputNumberSetting },
+  components: { RadioSetting, CheckboxSetting, InputSetting, InputNumberSetting, SelectSetting },
   created() {},
   mounted() {},
   methods: {}

@@ -251,6 +251,8 @@ export default {
           this.listdata.splice(arguments[0], 1)
         }
       }
+      this.currentItem = {}
+
       this.$forceUpdate()
     },
 
