@@ -1,11 +1,18 @@
 <template>
   <div class="AttributeModificationArea">
     <!-- 单选框设置 -->
-    <radio-setting v-if="currentItem.type==='radio'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
+    <radio-setting v-if="currentItem.type==='Fd_Radio'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
     <!-- 多选框设置 -->
-    <checkbox-setting v-if="currentItem.type==='checkbox'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
+    <checkbox-setting v-else-if="currentItem.type==='Fd_Checkbox'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
     <!-- 输入框设置 -->
-    <input-setting v-if="currentItem.type==='Fd_Input'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
+    <input-setting v-else-if="currentItem.type==='Fd_Input'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
+    <!-- 计数器设置 -->
+    <input-number-setting
+      v-else-if="currentItem.type==='Fd_InputNumber'"
+      v-bind="$attrs"
+      v-on="$listeners"
+      :currentItem="currentItem"
+    />
     <div class="other" v-else>请选择具体组件</div>
   </div>
 </template>
@@ -14,13 +21,14 @@
 import RadioSetting from './components/radioSetting'
 import CheckboxSetting from './components/checkboxSetting'
 import InputSetting from './components/inputSetting'
+import InputNumberSetting from './components/inputNumberSetting'
 export default {
   name: 'AttributeModificationArea',
   props: ['currentItem'],
   data() {
     return {}
   },
-  components: { RadioSetting, CheckboxSetting, InputSetting },
+  components: { RadioSetting, CheckboxSetting, InputSetting, InputNumberSetting },
   created() {},
   mounted() {},
   methods: {}

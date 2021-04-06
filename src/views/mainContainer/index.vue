@@ -108,16 +108,16 @@ import draggable from 'vuedraggable'
 import AttributeModificationArea from './AttributeModificationArea'
 
 //表单组件
-import Cascader from '../../components/FormComponents/Cascader'
-import Checkbox from '../../components/FormComponents/Checkbox'
-import DatePicker from '../../components/FormComponents/Cascader'
-import Formswitch from '../../components/FormComponents/Formswitch' // switch组件名与switch关键字冲突需要单独处理
+import Fd_Cascader from '../../components/FormComponents/Cascader'
+import Fd_Checkbox from '../../components/FormComponents/Checkbox'
+import Fd_DatePicker from '../../components/FormComponents/Cascader'
+import Fd_Switch from '../../components/FormComponents/Formswitch' // switch组件名与switch关键字冲突需要单独处理
 import Fd_Input from '../../components/FormComponents/Input' // Input组件名与Input表单关键字冲突需要单独处理
-import InputNumber from '../../components/FormComponents/InputNumber'
-import Radio from '../../components/FormComponents/Radio'
-import Select from '../../components/FormComponents/Select' // Select组件名与Select表单关键字冲突需要单独处理
-import Slider from '../../components/FormComponents/Slider'
-import TimePicker from '../../components/FormComponents/TimePicker'
+import Fd_InputNumber from '../../components/FormComponents/InputNumber'
+import Fd_Radio from '../../components/FormComponents/Radio'
+import Fd_Select from '../../components/FormComponents/Select' // Select组件名与Select表单关键字冲突需要单独处理
+import Fd_Slider from '../../components/FormComponents/Slider'
+import Fd_TimePicker from '../../components/FormComponents/TimePicker'
 
 // 引入表单组件
 export default {
@@ -131,16 +131,16 @@ export default {
       currentOptions: {},
       //按钮数据源
       buttonData: [
-        { name: '单选框', type: 'radio' },
-        { name: '多选框', type: 'checkbox' },
+        { name: '单选框', type: 'Fd_Radio' },
+        { name: '多选框', type: 'Fd_Checkbox' },
         { name: '输入框', type: 'Fd_Input' },
-        { name: '计数器', type: 'inputNumber' },
-        { name: '选择器', type: 'Select' },
-        { name: '级联选择器', type: 'cascader' },
-        { name: '开关', type: 'Formswitch' },
-        { name: '滑块', type: 'slider' },
-        { name: '时间选择', type: 'timePicker' },
-        { name: '日期选择', type: 'datePicker' }
+        { name: '计数器', type: 'Fd_InputNumber' },
+        { name: '选择器', type: 'Fd_Select' },
+        { name: '级联选择器', type: 'Fd_Cascader' },
+        { name: '开关', type: 'Fd_Switch' },
+        { name: '滑块', type: 'Fd_Slider' },
+        { name: '时间选择', type: 'Fd_TimePicker' },
+        { name: '日期选择', type: 'Fd_DatePicker' }
       ],
       //渲染拖拽组件
       listdata: [],
@@ -187,16 +187,16 @@ export default {
   components: {
     AttributeModificationArea,
     //表单组件
-    Radio,
-    Checkbox,
+    Fd_Cascader,
+    Fd_Checkbox,
     Fd_Input,
-    InputNumber,
-    Select,
-    Cascader,
-    Formswitch,
-    Slider,
-    TimePicker,
-    DatePicker,
+    Fd_DatePicker,
+    Fd_InputNumber,
+    Fd_TimePicker,
+    Fd_Switch,
+    Fd_Slider,
+    Fd_Radio,
+    Fd_Select,
     //拖拽插件
     draggable
   },
@@ -206,9 +206,9 @@ export default {
       this.condition = false //拖拽区域销毁
 
       if (typeof arguments[arguments.length - 1] === 'undefined') {
-        this.listdata[arguments[1]] = JSON.parse(JSON.stringify(arguments[0]))
+        this.listdata[arguments[1]] = arguments[0]
       } else if (typeof arguments[arguments.length - 1] != 'undefined') {
-        this.listdata[arguments[1]][arguments[2]] = JSON.parse(JSON.stringify(arguments[0]))
+        this.listdata[arguments[1]][arguments[2]] = arguments[0]
       }
 
       // // 拖拽区域生成，强制更新
