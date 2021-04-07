@@ -13,8 +13,10 @@
       v-on="$listeners"
       :currentItem="currentItem"
     />
-    <!-- 下拉框设置 -->
+    <!-- 选择器设置 -->
     <select-setting v-else-if="currentItem.type==='Fd_Select'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
+    <!-- 级联选择器设置 -->
+    <cascader-setting v-else-if="currentItem.type==='Fd_Cascader'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
     <div class="other" v-else>请选择具体组件</div>
   </div>
 </template>
@@ -25,6 +27,7 @@ import CheckboxSetting from './components/checkboxSetting'
 import InputSetting from './components/inputSetting'
 import InputNumberSetting from './components/inputNumberSetting'
 import SelectSetting from './components/selectSetting'
+import cascaderSetting from './components/cascaderSetting'
 
 export default {
   name: 'AttributeModificationArea',
@@ -32,7 +35,14 @@ export default {
   data() {
     return {}
   },
-  components: { RadioSetting, CheckboxSetting, InputSetting, InputNumberSetting, SelectSetting },
+  components: {
+    RadioSetting,
+    CheckboxSetting,
+    InputSetting,
+    InputNumberSetting,
+    SelectSetting,
+    cascaderSetting
+  },
   created() {},
   mounted() {},
   methods: {}
