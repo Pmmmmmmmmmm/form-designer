@@ -29,11 +29,16 @@
         <div class="block">
           <el-tree :data="cascaderSetting.options" node-key="id">
             <span class="custom-tree-node" slot-scope="{ node, data }">
-              <span>名：</span>
-              <el-input></el-input>
-              <br />
-              <span>值：</span>
-              <el-input></el-input>
+              <div class="setting-window">
+                <div class="item">
+                  <span>名：</span>
+                  <el-input></el-input>
+                </div>
+                <div class="item">
+                  <span>值：</span>
+                  <el-input></el-input>
+                </div>
+              </div>
 
               <span>
                 <el-button type="text" size="mini" @click="() => append(data)">添加</el-button>
@@ -174,6 +179,21 @@ export default {
       span {
         font-size: 15px;
         margin: 15px 10px 5px 5px;
+      }
+    }
+  }
+  .block {
+    width: 100%;
+    height: 100%;
+    /deep/ .el-tree {
+      height: 100%;
+
+      .setting-window {
+        width: 100%;
+        height: 30px;
+        .item {
+          height: 20px;
+        }
       }
     }
   }
