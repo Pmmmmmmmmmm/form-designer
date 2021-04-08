@@ -1,7 +1,13 @@
 <template>
   <div class="mainContainer">
     <header>
-      <h3>Form Designer</h3>
+      <h4>Form Designer</h4>
+      <el-button type="primary" title="查看JSON代码" @click="createJSON   ">
+        <i class="el-icon-tickets"></i>
+      </el-button>
+      <el-button type="primary" title="开始">
+        <i class="el-icon-video-play"></i>
+      </el-button>
     </header>
     <div class="container">
       <div class="leftAside">
@@ -98,6 +104,13 @@
         <attribute-modification-area :currentItem="currentItem" @emitOpintions="emitOpintions" />
       </div>
     </div>
+
+    <el-dialog title="JSON Code" width="50%" :visible.sync="showJSON" :modal-append-to-body="false">
+      <el-input class="resizeNone" :autosize="{ minRows: 2, maxRows: 14}" type="textarea" v-model="listdataJSON"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="showJSON = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -124,6 +137,7 @@ export default {
   name: 'mainContainer',
   data() {
     return {
+      showJSON: false,
       drag: false,
       //最近加入拖动列表的元素
       currentItem: {},
@@ -144,6 +158,7 @@ export default {
       ],
       //渲染拖拽组件
       listdata: [],
+      listdataJSON: '',
       // 按钮拖拽区设置
       optionsA: {
         group: {
@@ -285,6 +300,10 @@ export default {
         return false
       }
       return true
+    },
+    createJSON() {
+      this.showJSON = true
+      this.listdataJSON = JSON.stringify(this.listdata, null, 4)
     }
   }
 }
@@ -292,6 +311,24 @@ export default {
 
 <style lang="less" scoped>
 .mainContainer {
+  header {
+    box-sizing: border-box;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    h4 {
+      flex: 1;
+    }
+    .el-button {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+    }
+    i {
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
   position: fixed;
   width: 100vw;
   height: 100%;
@@ -485,6 +522,14 @@ export default {
     }
     .rightAside {
       width: 300px;
+    }
+  }
+  /deep/.el-dialog__wrapper {
+    overflow: hidden;
+    .resizeNone {
+      .el-textarea__inner {
+        resize: none;
+      }
     }
   }
 }
