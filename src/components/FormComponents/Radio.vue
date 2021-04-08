@@ -35,6 +35,7 @@ export default {
         // console.log(oldValue, newValue)
 
         this.setting = newValue
+        this.$forceUpdate()
 
         // console.log('change')
       },
@@ -44,6 +45,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.radio {
+  display: flex;
+}
 </style>
 
 

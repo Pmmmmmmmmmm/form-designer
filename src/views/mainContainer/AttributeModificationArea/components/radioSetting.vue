@@ -58,14 +58,13 @@ export default {
   data() {
     return {
       activeName: 'first',
-      selectSetting: {
-        type: 'FD_Select',
+      radioSetting: {
         field: 'cate_id',
         title: '请输入标题',
         value: '',
         options: [
-          { value: '104', label: '生态蔬菜' },
-          { value: '105', label: '新鲜水果' }
+          { label: '选项1', value: '10' },
+          { label: '选项2', value: '20' }
         ],
         props: {
           disabled: '',
