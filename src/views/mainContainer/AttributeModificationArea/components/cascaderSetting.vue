@@ -32,17 +32,16 @@
               <div class="setting-window">
                 <div class="item">
                   <span>名：</span>
-                  <el-input></el-input>
+                  <el-input size="mini"></el-input>
                 </div>
                 <div class="item">
                   <span>值：</span>
-                  <el-input></el-input>
+                  <el-input size="mini"></el-input>
                 </div>
               </div>
-
-              <span>
-                <el-button type="text" size="mini" @click="() => append(data)">添加</el-button>
-                <el-button type="text" size="mini" @click="() => remove(node, data)">删除</el-button>
+              <span class="toolbar">
+                <el-button size="mini" @click.stop="append(data)" type="success" icon="el-icon-plus"></el-button>
+                <el-button size="mini" type="danger" icon="el-icon-delete" @click="remove(node, data)"></el-button>
               </span>
             </span>
           </el-tree>
@@ -166,33 +165,66 @@ export default {
 <style lang="less" scoped>
 .cascader-setting {
   min-height: 100%;
-  .common {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    .item {
+  /deep/.el-tabs__header {
+    margin: 0;
+  }
+  .el-tabs__content {
+    .common {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: calc(100vh - 91px);
+      padding: 10px;
       display: flex;
       flex-direction: column;
-      align-items: left;
-      span {
-        font-size: 15px;
-        margin: 15px 10px 5px 5px;
+      .item {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        span {
+          font-size: 15px;
+          margin: 15px 10px 5px 5px;
+        }
       }
     }
-  }
-  .block {
-    width: 100%;
-    height: 100%;
-    /deep/ .el-tree {
-      height: 100%;
+    .block {
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
 
-      .setting-window {
-        width: 100%;
-        height: 30px;
-        .item {
-          height: 20px;
+      /deep/.el-tree {
+        padding: 10px;
+        min-height: calc(100vh - 91px);
+        .el-tree-node__content {
+          position: relative;
+          display: block;
+          height: fit-content;
+          margin: 2px;
+          padding: 2px;
+          border: #4aa2bd 1px solid;
+          border-radius: 6px;
+
+          .setting-window {
+            display: inline-block;
+            .item {
+              margin-bottom: 2px;
+              .el-input {
+                // height: 20px;
+                width: 100px;
+              }
+            }
+          }
+          .toolbar {
+            display: flex;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            .el-button {
+              width: 25px;
+              height: 25px;
+              padding: 0;
+              margin: 2px;
+            }
+          }
         }
       }
     }
