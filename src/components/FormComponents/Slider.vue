@@ -1,32 +1,46 @@
 <template>
-  <div class="Slider">
-    <div class="block">
-      <el-slider v-model="value2"></el-slider>
-    </div>
+  <div class="slider">
+    <span>{{setting.title+'：'}}</span>
+    <el-slider v-model="setting.value"></el-slider>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Slider",
+  name: 'slider',
+  props: ['currentOptions'],
   data() {
     return {
-      value1: 0,
-      value2: 50,
-      value3: 36,
-      value4: 48,
-      value5: 42,
-    };
+      setting: {
+        title: '请输入标题',
+        value: 20
+      }
+    }
   },
-  methods: {
-    formatTooltip(val) {
-      return val / 100;
-    },
+  created() {
+    // 如果传进来的currentOptions中包含设置参数则将其赋值到setting
+    this.currentOptions.title && (this.setting = this.currentOptions)
   },
-};
+  methods: {},
+  watch: {
+    // 检查到currentOptions改变则立即赋值给setting
+    currentOptions: {
+      handler: function(oldValue, newValue) {
+        this.setting = newValue
+        this.$forceUpdate()
+      },
+      deep: true
+    }
+  }
+}
 </script>
-<style scoped>
-.Slider {
-  min-width: 100px;
+<style lang="less" scoped>
+.slider {
+  display: flex;
+  align-items: center;
+  .el-slider {
+    flex: 1;
+    min-width: 100px;
+  }
 }
 </style>

@@ -8,24 +8,23 @@
         end: '18:30',
       }"
       placeholder="选择时间"
-    >
-    </el-time-select>
+    ></el-time-select>
   </div>
 </template>
 
 <script>
 export default {
-  name: "TimePicker",
+  name: 'TimePicker',
   data() {
     return {
-      value: "",
-    };
+      value: ''
+    }
   },
   components: {},
   created() {},
   mounted() {},
-  methods: {},
-};
+  methods: {}
+}
 </script>
 <style scoped>
 </style>

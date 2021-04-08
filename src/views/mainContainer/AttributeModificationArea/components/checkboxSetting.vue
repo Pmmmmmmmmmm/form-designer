@@ -26,11 +26,15 @@
           <li>
             <el-button type="primary" icon="el-icon-plus" :disabled="checkboxSetting.options.length == 5" @click="addOptions"></el-button>
           </li>
-          <li v-for="(item, index) in checkboxSetting.options" :key="index">
+          <li v-for="(item, index) in checkboxSetting.options.length" :key="index">
             <div class="title">
               <span>项名：</span>
             </div>
-            <el-input v-model="checkboxSetting.options[index]"></el-input>
+            <el-input v-model="checkboxSetting.options[index].label"></el-input>
+            <div class="title">
+              <span>值：</span>
+            </div>
+            <el-input v-model="checkboxSetting.options[index].value"></el-input>
             <div class="del">
               <el-popconfirm title="确定删除此项吗？" @confirm="confirm(index)">
                 <el-button type="danger" slot="reference" icon="el-icon-delete"></el-button>
@@ -55,7 +59,10 @@ export default {
         title: '请输入标题',
         field: 'is_postage',
         value: [],
-        options: ['选项1', '选项2'],
+        options: [
+          { label: '选项1', value: '10' },
+          { label: '选项2', value: '20' }
+        ],
         props: {
           size: ''
         }
@@ -75,7 +82,10 @@ export default {
     },
     //添加选项
     addOptions() {
-      this.checkboxSetting.options.push(`选项${this.checkboxSetting.options.length + 1}`)
+      this.checkboxSetting.options.push({
+        label: '选项' + (this.checkboxSetting.options.length + 1),
+        value: this.checkboxSetting.options.length + 1
+      })
     }
   },
   watch: {

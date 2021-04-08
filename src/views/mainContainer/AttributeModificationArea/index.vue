@@ -17,6 +17,10 @@
     <select-setting v-else-if="currentItem.type==='Fd_Select'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
     <!-- 级联选择器设置 -->
     <cascader-setting v-else-if="currentItem.type==='Fd_Cascader'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
+    <!-- 开关设置 -->
+    <switch-setting v-else-if="currentItem.type==='Fd_Switch'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
+    <!-- 滑块设置 -->
+    <slider-setting v-else-if="currentItem.type==='Fd_Slider'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
     <div class="other" v-else>请选择具体组件</div>
   </div>
 </template>
@@ -28,6 +32,8 @@ import InputSetting from './components/inputSetting'
 import InputNumberSetting from './components/inputNumberSetting'
 import SelectSetting from './components/selectSetting'
 import cascaderSetting from './components/cascaderSetting'
+import switchSetting from './components/switchSetting'
+import sliderSetting from './components/sliderSetting'
 
 export default {
   name: 'AttributeModificationArea',
@@ -41,7 +47,9 @@ export default {
     InputSetting,
     InputNumberSetting,
     SelectSetting,
-    cascaderSetting
+    cascaderSetting,
+    switchSetting,
+    sliderSetting
   },
   created() {},
   mounted() {},

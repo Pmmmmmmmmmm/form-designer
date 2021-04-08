@@ -2,7 +2,7 @@
   <div class="Checkbox">
     <span>{{setting.title+'：'}}</span>
     <el-checkbox-group v-model="setting.value">
-      <el-checkbox v-for="(item, index) in setting.options" :key="index" :label="item"></el-checkbox>
+      <el-checkbox v-for="(item, index) in setting.options" :key="index" :value="item.value" :label="item.label"></el-checkbox>
     </el-checkbox-group>
   </div>
 </template>
@@ -15,7 +15,10 @@ export default {
     return {
       setting: {
         title: '请输入标题',
-        options: ['选项1', '选项2'],
+        options: [
+          { label: '选项1', value: '22' },
+          { label: '选项2', value: '11' }
+        ],
         value: []
       }
     }

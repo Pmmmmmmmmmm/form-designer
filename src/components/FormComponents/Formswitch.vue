@@ -1,24 +1,41 @@
 <template>
   <div class="Formswitch">
-    <el-switch v-model="value" active-color="#409eff" inactive-color="#c6e2ff">
-    </el-switch>
+    <span>{{setting.title+'：'}}</span>
+    <el-switch v-model="setting.value" active-color="#409EFF" inactive-color="#c0c4cc"></el-switch>
   </div>
 </template>
 
-
 <script>
 export default {
-  name: "Formswitch",
+  name: 'Formswitch',
+  props: ['currentOptions'],
   data() {
     return {
-      value: true,
-    };
+      setting: {
+        title: '请输入标题',
+        value: true
+      }
+    }
   },
-  components: {},
-  created() {},
-  mounted() {},
+  created() {
+    // 如果传进来的currentOptions中包含设置参数则将其赋值到setting
+    this.currentOptions.title && (this.setting = this.currentOptions)
+  },
   methods: {},
-};
+  watch: {
+    // 检查到currentOptions改变则立即赋值给setting
+    currentOptions: {
+      handler: function(oldValue, newValue) {
+        this.setting = newValue
+        this.$forceUpdate()
+      },
+      deep: true
+    }
+  }
+}
 </script>
-<style scoped>
+<style lang="less" scoped>
+.Formswitch {
+  display: flex;
+}
 </style>
