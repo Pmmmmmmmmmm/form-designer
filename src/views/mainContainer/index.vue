@@ -365,9 +365,7 @@ export default {
         .formComponentButton {
           max-width: calc(100% - 10px);
           min-width: 120px;
-
           display: inline-block;
-
           margin: 0 0 5px 5px;
           box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
           .el-button {
