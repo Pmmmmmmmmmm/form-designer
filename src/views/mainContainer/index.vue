@@ -2,7 +2,7 @@
   <div class="mainContainer">
     <header>
       <h4>Form Designer</h4>
-      <el-button type="primary" title="查看JSON代码" @click="createJSON   ">
+      <el-button type="primary" title="查看JSON代码" @click="createJSON">
         <i class="el-icon-tickets"></i>
       </el-button>
       <el-button type="primary" title="开始">
@@ -363,8 +363,11 @@ export default {
           margin-left: 10px;
         }
         .formComponentButton {
+          max-width: calc(100% - 10px);
+          min-width: 120px;
+
           display: inline-block;
-          width: 120px;
+
           margin: 0 0 5px 5px;
           box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
           .el-button {
