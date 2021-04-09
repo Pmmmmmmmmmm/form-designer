@@ -123,7 +123,7 @@ import AttributeModificationArea from './AttributeModificationArea'
 //表单组件
 import Fd_Cascader from '../../components/FormComponents/Cascader'
 import Fd_Checkbox from '../../components/FormComponents/Checkbox'
-import Fd_DatePicker from '../../components/FormComponents/Cascader'
+import Fd_DatePicker from '../../components/FormComponents/DatePicker'
 import Fd_Switch from '../../components/FormComponents/Formswitch' // switch组件名与switch关键字冲突需要单独处理
 import Fd_Input from '../../components/FormComponents/Input' // Input组件名与Input表单关键字冲突需要单独处理
 import Fd_InputNumber from '../../components/FormComponents/InputNumber'
