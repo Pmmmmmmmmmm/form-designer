@@ -21,6 +21,20 @@
     <switch-setting v-else-if="currentItem.type==='Fd_Switch'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
     <!-- 滑块设置 -->
     <slider-setting v-else-if="currentItem.type==='Fd_Slider'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
+    <!-- 滑块设置 -->
+    <timePicker-setting
+      v-else-if="currentItem.type==='Fd_TimePicker'"
+      v-bind="$attrs"
+      v-on="$listeners"
+      :currentItem="currentItem"
+    />
+    <!-- 滑块设置 -->
+    <datePicker-setting
+      v-else-if="currentItem.type==='Fd_DatePicker'"
+      v-bind="$attrs"
+      v-on="$listeners"
+      :currentItem="currentItem"
+    />
     <div class="other" v-else>请选择具体组件</div>
   </div>
 </template>
@@ -34,7 +48,8 @@ import SelectSetting from './components/selectSetting'
 import cascaderSetting from './components/cascaderSetting'
 import switchSetting from './components/switchSetting'
 import sliderSetting from './components/sliderSetting'
-
+import timePickerSetting from './components/timePickerSetting'
+import datePickerSetting from './components/datePickerSetting'
 export default {
   name: 'AttributeModificationArea',
   props: ['currentItem'],
@@ -49,7 +64,9 @@ export default {
     SelectSetting,
     cascaderSetting,
     switchSetting,
-    sliderSetting
+    sliderSetting,
+    timePickerSetting,
+    datePickerSetting
   },
   created() {},
   mounted() {},

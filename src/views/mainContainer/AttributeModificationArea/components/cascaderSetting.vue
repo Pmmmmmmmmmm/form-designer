@@ -26,26 +26,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="选项设置：" name="second">
-        <div class="block">
-          <el-tree :data="cascaderSetting.options" node-key="id">
-            <span class="custom-tree-node" slot-scope="{ node, data }">
-              <div class="setting-window">
-                <div class="item">
-                  <span>名：</span>
-                  <el-input size="mini"></el-input>
-                </div>
-                <div class="item">
-                  <span>值：</span>
-                  <el-input size="mini"></el-input>
-                </div>
-              </div>
-              <span class="toolbar">
-                <el-button size="mini" @click.stop="append(data)" type="success" icon="el-icon-plus"></el-button>
-                <el-button size="mini" type="danger" icon="el-icon-delete" @click="remove(node, data)"></el-button>
-              </span>
-            </span>
-          </el-tree>
-        </div>
+        <div class="block"></div>
 
         <!-- <ul class="cascader-options">
           <li>
@@ -77,15 +58,15 @@
         <div class="common">
           <div class="item">
             <span>是否多选：</span>
-            <el-input v-model="cascaderSetting.props.multiple"></el-input>
+            <el-switch v-model="cascaderSetting.props.multiple"></el-switch>
           </div>
           <div class="item">
             <span>是否禁用：</span>
-            <el-input v-model="cascaderSetting.props.disabled"></el-input>
+            <el-switch v-model="cascaderSetting.props.disabled"></el-switch>
           </div>
           <div class="item">
             <span>是否可以清空选项：</span>
-            <el-input v-model="cascaderSetting.props.clearable"></el-input>
+            <el-switch v-model="cascaderSetting.props.clearable"></el-switch>
           </div>
           <div class="item">
             <span>占位符：</span>
@@ -131,12 +112,12 @@ export default {
   },
   mounted() {},
   methods: {
-    append(data) {
-      const newChild = { label: 'testtest', children: [] }
-      if (!data.children) {
-        this.$set(data, 'children', [])
-      }
-      data.children.push(newChild)
+    append(node, data) {
+      // const newChild = { label: 'testtest', children: [] }
+      // if (!data.children) {
+      //   this.$set(data, 'children', [])
+      // }
+      // data.children.push(newChild)
     },
 
     remove(node, data) {

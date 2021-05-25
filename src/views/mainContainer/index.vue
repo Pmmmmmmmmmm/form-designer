@@ -140,7 +140,7 @@ import AttributeModificationArea from './attributeModificationArea/index'
 //表单组件
 import Fd_Cascader from '../../components/FormComponents/Cascader'
 import Fd_Checkbox from '../../components/FormComponents/Checkbox'
-import Fd_DatePicker from '../../components/FormComponents/Cascader'
+import Fd_DatePicker from '../../components/FormComponents/DatePicker'
 import Fd_Switch from '../../components/FormComponents/Formswitch' // switch组件名与switch关键字冲突需要单独处理
 import Fd_Input from '../../components/FormComponents/Input' // Input组件名与Input表单关键字冲突需要单独处理
 import Fd_InputNumber from '../../components/FormComponents/InputNumber'
@@ -418,8 +418,9 @@ export default {
           margin-left: 10px;
         }
         .formComponentButton {
+          max-width: calc(100% - 10px);
+          min-width: 120px;
           display: inline-block;
-          width: 120px;
           margin: 0 0 5px 5px;
           box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
           .el-button {
