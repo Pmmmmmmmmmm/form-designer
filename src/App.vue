@@ -5,13 +5,13 @@
 </template>
 
 <script>
-import MainContainer from './views/mainContainer/index.vue';
+import MainContainer from './views/mainContainer/index.vue'
 export default {
-  name: "app",
+  name: 'app',
   components: {
     MainContainer
-  },
-};
+  }
+}
 </script>
 
 

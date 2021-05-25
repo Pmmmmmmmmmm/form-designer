@@ -19,9 +19,10 @@
             <span>字段名：</span>
             <el-input v-model="radioSetting.field"></el-input>
           </div>
+
           <div class="item">
-            <span>预设值：</span>
-            <el-input v-model="radioSetting.value"></el-input>
+            <span>禁用：</span>
+            <el-switch v-model="radioSetting.props.disabled"></el-switch>
           </div>
         </div>
       </el-tab-pane>
@@ -68,10 +69,8 @@ export default {
         ],
         props: {
           disabled: '',
-          multiple: '',
-          size: '',
-          clearable: '',
-          placeholder: ''
+
+          size: ''
         }
       }
     }

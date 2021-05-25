@@ -1,11 +1,14 @@
 <template>
   <div class="mainContainer">
     <header>
-      <h4>Form Designer</h4>
-      <el-button type="primary" title="查看JSON代码" @click="createJSON   ">
+      <h4>基于vue的行政审批表单设计器</h4>
+      <el-button type="primary" title="导入JSON" @click="showInjectJSON=true">
+        <i class="el-icon-upload2"></i>
+      </el-button>
+      <el-button type="primary" title="查看JSON" @click="createJSON">
         <i class="el-icon-tickets"></i>
       </el-button>
-      <el-button type="primary" title="开始">
+      <el-button type="primary" title="开始" @click="showForm=true">
         <i class="el-icon-video-play"></i>
       </el-button>
     </header>
@@ -104,11 +107,25 @@
         <attribute-modification-area :currentItem="currentItem" @emitOpintions="emitOpintions" />
       </div>
     </div>
-
-    <el-dialog title="JSON Code" width="50%" :visible.sync="showJSON" :modal-append-to-body="false">
+    <!-- 导入json -->
+    <el-dialog title="导入JSON" width="50%" :visible.sync="showInjectJSON" :modal-append-to-body="false">
+      <el-input class="resizeNone" :autosize="{ minRows: 20, maxRows: 14}" type="textarea" v-model="InjectJSONData"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="injectJSON">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 显示json -->
+    <el-dialog title="导出JSON" width="50%" :visible.sync="showJSON" :modal-append-to-body="false">
       <el-input class="resizeNone" :autosize="{ minRows: 2, maxRows: 14}" type="textarea" v-model="listdataJSON"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="showJSON = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 表单效果预览 -->
+    <el-dialog title="效果预览" width="50%" :visible.sync="showForm" :modal-append-to-body="false">
+      <form-show :listdata="listdata"></form-show>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="showForm = false">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -118,7 +135,7 @@
 // 引入主体的三块区域
 
 import draggable from 'vuedraggable'
-import AttributeModificationArea from './AttributeModificationArea'
+import AttributeModificationArea from './attributeModificationArea/index'
 
 //表单组件
 import Fd_Cascader from '../../components/FormComponents/Cascader'
@@ -131,13 +148,16 @@ import Fd_Radio from '../../components/FormComponents/Radio'
 import Fd_Select from '../../components/FormComponents/Select' // Select组件名与Select表单关键字冲突需要单独处理
 import Fd_Slider from '../../components/FormComponents/Slider'
 import Fd_TimePicker from '../../components/FormComponents/TimePicker'
-
-// 引入表单组件
+//引入表单效果展示页
+import FormShow from '../../components/FormShow/index'
 export default {
   name: 'mainContainer',
   data() {
     return {
+      showInjectJSON: false,
       showJSON: false,
+      showForm: false,
+      InjectJSONData: '',
       drag: false,
       //最近加入拖动列表的元素
       currentItem: {},
@@ -213,7 +233,8 @@ export default {
     Fd_Radio,
     Fd_Select,
     //拖拽插件
-    draggable
+    draggable,
+    FormShow
   },
   methods: {
     //将属性设置模块返回的参数渲染到组件中
@@ -302,8 +323,42 @@ export default {
       return true
     },
     createJSON() {
+      let temp = this.formatData(this.listdata)
       this.showJSON = true
-      this.listdataJSON = JSON.stringify(this.listdata, null, 4)
+      this.listdataJSON = JSON.stringify(temp, null, 4)
+    },
+    injectJSON() {
+      if (!this.isJSON(this.InjectJSONData)) {
+        alert('请输入正确的数据格式')
+        this.InjectJSONData = ''
+        return false
+      }
+      this.showInjectJSON = false
+      this.listdata = JSON.parse(this.InjectJSONData)
+      this.InjectJSONData = ''
+    },
+    isJSON(str) {
+      if (typeof str == 'string') {
+        try {
+          var obj = JSON.parse(str)
+          if (typeof obj == 'object' && obj) {
+            return true
+          } else {
+            return false
+          }
+        } catch (e) {
+          return false
+        }
+      }
+    },
+    formatData(obj) {
+      let temp = obj.concat()
+      temp.forEach(item => {
+        if (item.type == 'Fd_Radio') {
+          item.type = 'radio'
+        }
+      })
+      return temp
     }
   }
 }
@@ -525,7 +580,10 @@ export default {
     }
   }
   /deep/.el-dialog__wrapper {
-    overflow: hidden;
+    .el-dialog {
+      height: 80%;
+      overflow: auto;
+    }
     .resizeNone {
       .el-textarea__inner {
         resize: none;
