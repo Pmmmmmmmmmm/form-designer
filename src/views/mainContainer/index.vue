@@ -122,7 +122,7 @@
       </span>
     </el-dialog>
     <!-- 表单效果预览 -->
-    <el-dialog title="效果预览" width="50%" :visible.sync="showForm" :modal-append-to-body="false">
+    <el-dialog title="效果预览" width="50%" :visible.sync="showForm" v-if="showForm" :modal-append-to-body="false">
       <form-show :listdata="listdata"></form-show>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="showForm = false">确 定</el-button>
@@ -247,7 +247,7 @@ export default {
         this.listdata[arguments[1]][arguments[2]] = arguments[0]
       }
 
-      // // 拖拽区域生成，强制更新
+      //  拖拽区域生成，强制更新
       this.$nextTick(function() {
         this.condition = true
       })
@@ -334,7 +334,7 @@ export default {
         return false
       }
       this.showInjectJSON = false
-      this.listdata = JSON.parse(this.InjectJSONData)
+      this.listdata = this.reverseFormatData(JSON.parse(this.InjectJSONData))
       this.InjectJSONData = ''
     },
     isJSON(str) {
@@ -352,10 +352,19 @@ export default {
       }
     },
     formatData(obj) {
-      let temp = obj.concat()
+      let temp = JSON.parse(JSON.stringify(obj))
       temp.forEach(item => {
         if (item.type == 'Fd_Radio') {
           item.type = 'radio'
+        }
+      })
+      return temp
+    },
+    reverseFormatData(obj) {
+      let temp = JSON.parse(JSON.stringify(obj))
+      temp.forEach(item => {
+        if (item.type == 'radio') {
+          item.type = 'Fd_Radio'
         }
       })
       return temp
@@ -582,7 +591,7 @@ export default {
   }
   /deep/.el-dialog__wrapper {
     .el-dialog {
-      height: 80%;
+      max-height: 80%;
       overflow: auto;
     }
     .resizeNone {

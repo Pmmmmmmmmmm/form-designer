@@ -4,6 +4,8 @@
 
 <script>
 export default {
+  props: ['listdata'],
+
   data() {
     return {
       fapi: null,
@@ -15,9 +17,22 @@ export default {
       )
     }
   },
+  created() {
+    console.log(this.listdata)
+    this.rule = formCreate.parseJson(JSON.stringify(this.formatData(this.listdata)))
+  },
   methods: {
     onSubmit(formData) {
       //todo 提交表单
+    },
+    formatData(obj) {
+      let temp = JSON.parse(JSON.stringify(obj))
+      temp.forEach(item => {
+        if (item.type == 'Fd_Radio') {
+          item.type = 'radio'
+        }
+      })
+      return temp
     }
   }
 }
