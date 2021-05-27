@@ -37,15 +37,11 @@
           </div>
           <div class="item">
             <span>步长：</span>
-            <el-input v-model="inputSetting.props.step"></el-input>
+            <el-input-number v-model="inputSetting.props.step"></el-input-number>
           </div>
           <div class="item">
             <span>禁用：</span>
-            <el-input v-model="inputSetting.props.disabled"></el-input>
-          </div>
-          <div class="item">
-            <span>精度：</span>
-            <el-input v-model="inputSetting.props.precision"></el-input>
+            <el-switch v-model="inputSetting.props.disabled"></el-switch>
           </div>
         </div>
       </el-tab-pane>
@@ -68,8 +64,8 @@ export default {
         props: {
           min: 0,
           max: 10,
-          step: '',
-          precision: '',
+          step: 1,
+
           disabled: '',
           size: ''
         }

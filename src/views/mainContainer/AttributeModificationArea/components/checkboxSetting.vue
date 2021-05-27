@@ -19,6 +19,10 @@
             <span>字段名：</span>
             <el-input v-model="checkboxSetting.field"></el-input>
           </div>
+          <div class="item">
+            <span>禁用：</span>
+            <el-switch v-model="checkboxSetting.props.disabled"></el-switch>
+          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="选项设置：" name="second">
@@ -64,7 +68,8 @@ export default {
           { label: '选项2', value: '20' }
         ],
         props: {
-          size: ''
+          size: '',
+          disabled: false
         }
       }
     }

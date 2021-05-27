@@ -2,7 +2,13 @@
   <div class="Fd_Select">
     <span>{{setting.title+'：'}}</span>
     <el-select v-model="setting.value" placeholder="请选择">
-      <el-option v-for="item in setting.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+      <el-option
+        v-for="item in setting.options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+        :disabled="setting.props.disabled"
+      ></el-option>
     </el-select>
   </div>
 </template>

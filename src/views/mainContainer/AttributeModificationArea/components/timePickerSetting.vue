@@ -24,10 +24,6 @@
       <el-tab-pane label="时间选择器" name="second">
         <div class="common">
           <div class="item">
-            <span>完全只读：</span>
-            <el-switch v-model="timePickerSetting.props.readonly"></el-switch>
-          </div>
-          <div class="item">
             <span>禁用</span>
             <el-switch v-model="timePickerSetting.props.disabled"></el-switch>
           </div>
@@ -41,36 +37,59 @@
           </div>
 
           <div class="item">
-            <span>是否为时间范围选择</span>
-            <el-switch v-model="timePickerSetting.props.isRange"></el-switch>
-          </div>
-          <div class="item">
-            <span>选择范围时的分隔符</span>
-            <el-input v-model="timePickerSetting.props.rangeSeparator"></el-input>
-          </div>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane label="特有选项" name="third">
-        <div class="common">
-          <div class="item">
             <span>开始时间</span>
-            <el-input v-model="timePickerSetting.props.pickerOptions.start"></el-input>
+            <el-time-select
+              v-model="timePickerSetting.props.pickerOptions.start"
+              :picker-options="{
+                start: '00:00',
+                step: '00:15',
+                end: '24:00',
+              }"
+            ></el-time-select>
           </div>
           <div class="item">
             <span>结束时间</span>
-            <el-input v-model="timePickerSetting.props.pickerOptions.end"></el-input>
+            <el-time-select
+              v-model="timePickerSetting.props.pickerOptions.end"
+              :picker-options="{
+                start: '00:00',
+                step: '00:15',
+                end: '24:00',
+              }"
+            ></el-time-select>
           </div>
           <div class="item">
             <span>间隔时间</span>
-            <el-input v-model="timePickerSetting.props.pickerOptions.step"></el-input>
+            <el-time-select
+              v-model="timePickerSetting.props.pickerOptions.step"
+              :picker-options="{
+                start: '00:00',
+                step: '00:01',
+                end: '01:00',
+              }"
+            ></el-time-select>
           </div>
           <div class="item">
             <span>最小时间，小于该时间的时间段将被禁用</span>
-            <el-input v-model="timePickerSetting.props.pickerOptions.minTime"></el-input>
+            <el-time-select
+              v-model="timePickerSetting.props.pickerOptions.minTime"
+              :picker-options="{
+                start: '00:00',
+                step: '00:15',
+                end: '24:00',
+              }"
+            ></el-time-select>
           </div>
           <div class="item">
             <span>最大时间，大于该时间的时间段将被禁用</span>
-            <el-input v-model="timePickerSetting.props.pickerOptions.maxTime"></el-input>
+            <el-time-select
+              v-model="timePickerSetting.props.pickerOptions.maxTime"
+              :picker-options="{
+                start: '00:00',
+                step: '00:15',
+                end: '24:00',
+              }"
+            ></el-time-select>
           </div>
         </div>
       </el-tab-pane>
@@ -91,61 +110,25 @@ export default {
         title: '请输入标题',
         value: '',
         props: {
-          // 完全只读
-          readonly: '',
           // 禁用
           disabled: '',
           //  是否显示清除按钮
           clearable: '',
           // 输入框尺寸
           size: '',
-
-          // 显示类型
-          type: '',
-          // 显示在输入框中的格式
-          format: '',
-          //  对齐方式
-          align: '',
-          // 当前时间日期选择器特有的选项参考下表
-          pickerOptions: '',
-          // 选择范围时的分隔符
-          rangeSeparator: '',
-          // 可选，选择器打开时默认显示的时间
-          defaultValue: '',
-          // 范围选择时选中日期所使用的当日内具体时刻
-          defaultTime: '',
-
-          // 在范围选择器里取消两个日期面板之间的联动
-          unlinkPanels: ''
-
-          // // 完全只读
-          // readonly: '',
-          // // 禁用
-          // disabled: '',
-          // // 文本框可输入
-          // editable: '',
-          // // 是否显示清除按钮
-          // clearable: '',
-          // // 输入框尺寸
-          // size: '',
-          // // 是否为时间范围选择，仅对<el-time-picker>有效
-          // isRange: '',
-
           // // 当前时间日期选择器特有的选项
-          // pickerOptions: {
-          //   // 开始时间
-          //   start: '',
-          //   // 结束时间
-          //   end: '',
-          //   // 间隔时间
-          //   step: '',
-          //   // 最小时间，小于该时间的时间段将被禁用
-          //   minTime: '',
-          //   // 最大时间，大于该时间的时间段将被禁用
-          //   maxTime: ''
-          // },
-          // // 选择范围时的分隔符
-          // rangeSeparator: ''
+          pickerOptions: {
+            // 开始时间
+            start: '',
+            // 结束时间
+            end: '',
+            // 间隔时间
+            step: '',
+            // 最小时间，小于该时间的时间段将被禁用
+            minTime: '',
+            // 最大时间，大于该时间的时间段将被禁用
+            maxTime: ''
+          }
         }
       }
     }

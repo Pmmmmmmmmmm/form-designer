@@ -19,37 +19,25 @@
             <span>字段名：</span>
             <el-input v-model="inputSetting.field"></el-input>
           </div>
-          <div class="item">
-            <span>预设值：</span>
-            <el-input v-model="inputSetting.value"></el-input>
-          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="选项设置：" name="second">
         <div class="input-options">
           <div class="item">
-            <span>类型：</span>
-            <el-input v-model="inputSetting.props.type"></el-input>
-          </div>
-          <div class="item">
             <span>最大输入长度：</span>
             <el-input v-model="inputSetting.props.maxlength"></el-input>
           </div>
           <div class="item">
-            <span>最小输入长度：</span>
-            <el-input v-model="inputSetting.props.minlength"></el-input>
+            <span>输入框占位文本：</span>
+            <el-input v-model="inputSetting.props.placeholder"></el-input>
           </div>
           <div class="item">
             <span>是否可清空：</span>
-            <el-input v-model="inputSetting.props.clearable"></el-input>
+            <el-switch v-model="inputSetting.props.clearable"></el-switch>
           </div>
           <div class="item">
             <span>禁用：</span>
-            <el-input v-model="inputSetting.props.disabled"></el-input>
-          </div>
-          <div class="item">
-            <span>输入框占位文本：</span>
-            <el-input v-model="inputSetting.props.placeholder"></el-input>
+            <el-switch v-model="inputSetting.props.disabled"></el-switch>
           </div>
         </div>
       </el-tab-pane>
@@ -68,11 +56,9 @@ export default {
         type: 'input',
         title: '请输入标题',
         field: 'is_postage',
-        value: '1',
+        value: '',
         props: {
-          type: '',
           maxlength: '',
-          minlength: '',
           placeholder: '',
           clearable: '',
           disabled: '',

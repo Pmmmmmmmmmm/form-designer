@@ -1,7 +1,7 @@
 <template>
   <div class="Formswitch">
     <span>{{setting.title+'：'}}</span>
-    <el-switch v-model="setting.value" active-color="#409EFF" inactive-color="#c0c4cc"></el-switch>
+    <el-switch v-model="setting.value" active-color="#409EFF" inactive-color="#c0c4cc" :disabled="setting.props.disabled"></el-switch>
   </div>
 </template>
 
@@ -13,7 +13,10 @@ export default {
     return {
       setting: {
         title: '请输入标题',
-        value: true
+        value: true,
+        props: {
+          disabled: false
+        }
       }
     }
   },

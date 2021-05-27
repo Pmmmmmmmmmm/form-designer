@@ -15,8 +15,7 @@
     />
     <!-- 选择器设置 -->
     <select-setting v-else-if="currentItem.type==='Fd_Select'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
-    <!-- 级联选择器设置 -->
-    <cascader-setting v-else-if="currentItem.type==='Fd_Cascader'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
+
     <!-- 开关设置 -->
     <switch-setting v-else-if="currentItem.type==='Fd_Switch'" v-bind="$attrs" v-on="$listeners" :currentItem="currentItem" />
     <!-- 滑块设置 -->
@@ -45,7 +44,6 @@ import CheckboxSetting from './components/checkboxSetting'
 import InputSetting from './components/inputSetting'
 import InputNumberSetting from './components/inputNumberSetting'
 import SelectSetting from './components/selectSetting'
-import cascaderSetting from './components/cascaderSetting'
 import switchSetting from './components/switchSetting'
 import sliderSetting from './components/sliderSetting'
 import timePickerSetting from './components/timePickerSetting'
@@ -62,7 +60,6 @@ export default {
     InputSetting,
     InputNumberSetting,
     SelectSetting,
-    cascaderSetting,
     switchSetting,
     sliderSetting,
     timePickerSetting,

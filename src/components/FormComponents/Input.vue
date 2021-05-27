@@ -1,7 +1,7 @@
 <template>
   <div class="Fd_Input">
     <span>{{setting.title+'：'}}</span>
-    <el-input v-model="setting.value"></el-input>
+    <el-input v-model="setting.value" :disabled="setting.props.disabled"></el-input>
   </div>
 </template>
 <script>
@@ -13,7 +13,10 @@ export default {
     return {
       setting: {
         title: '请输入标题',
-        value: '10'
+        value: '10',
+        props: {
+          disabled: false
+        }
       }
     }
   },

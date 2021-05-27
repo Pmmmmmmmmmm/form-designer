@@ -1,7 +1,7 @@
 <template>
   <div class="slider">
     <span>{{setting.title+'：'}}</span>
-    <el-slider v-model="setting.value"></el-slider>
+    <el-slider v-model="setting.value" :disabled="setting.props.disabled"></el-slider>
   </div>
 </template>
 
@@ -13,7 +13,10 @@ export default {
     return {
       setting: {
         title: '请输入标题',
-        value: 20
+        value: 20,
+        props: {
+          disabled: false
+        }
       }
     }
   },

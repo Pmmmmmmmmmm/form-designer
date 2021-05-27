@@ -33,15 +33,11 @@
           </div>
           <div class="item">
             <span>是否禁用</span>
-            <el-input v-model="sliderSetting.props.disabled"></el-input>
-          </div>
-          <div class="item">
-            <span>步长</span>
-            <el-input v-model="sliderSetting.props.step"></el-input>
+            <el-switch v-model="sliderSetting.props.disabled"></el-switch>
           </div>
           <div class="item">
             <span>是否为范围选择</span>
-            <el-input v-model="sliderSetting.props.range"></el-input>
+            <el-switch v-model="sliderSetting.props.range"></el-switch>
           </div>
         </div>
       </el-tab-pane>
@@ -60,16 +56,15 @@ export default {
         type: 'Fd_slider',
         title: '请输入标题',
         field: 'is_postage',
-        value: [],
+        value: 0,
         props: {
-          min: '',
-          max: '',
+          //   min: 0,
+          //   max: 100,
           disabled: '',
-          step: '',
-          // 是否为范围选择
-          range: '',
+          step: 10
+          //   range: false,
 
-          size: ''
+          //   size: ''
         }
       }
     }

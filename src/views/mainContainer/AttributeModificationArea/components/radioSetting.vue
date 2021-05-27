@@ -7,14 +7,7 @@
             <span>标题：</span>
             <el-input v-model="radioSetting.title"></el-input>
           </div>
-          <div class="item">
-            <span>尺寸：</span>
-            <el-select v-model="radioSetting.props.size" placeholder="请选择尺寸">
-              <el-option label="普通尺寸" value="medium" />
-              <el-option label="小尺寸" value="small " />
-              <el-option label="迷你" value="mini" />
-            </el-select>
-          </div>
+
           <div class="item">
             <span>字段名：</span>
             <el-input v-model="radioSetting.field"></el-input>
@@ -68,9 +61,7 @@ export default {
           { label: '选项2', value: '20' }
         ],
         props: {
-          disabled: '',
-
-          size: ''
+          disabled: ''
         }
       }
     }

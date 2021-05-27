@@ -1,28 +1,27 @@
 <template >
   <div class="switchSetting">
-    <el-tabs v-model="activeName" type="card">
-      <el-tab-pane label="通用设置：" name="first">
-        <div class="common">
-          <div class="item">
-            <span>标题：</span>
-            <el-input v-model="switchSetting.title"></el-input>
-          </div>
-          <div class="item">
-            <span>尺寸：</span>
-            <el-select v-model="switchSetting.props.size" placeholder="请选择尺寸">
-              <el-option label="普通尺寸" value="medium" />
-              <el-option label="小尺寸" value="small" />
-              <el-option label="迷你" value="mini" />
-            </el-select>
-          </div>
-          <div class="item">
-            <span>字段名：</span>
-            <el-input v-model="switchSetting.field"></el-input>
-          </div>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane label="选项设置：" name="second"></el-tab-pane>
-    </el-tabs>
+    <div class="common">
+      <div class="item">
+        <span>标题：</span>
+        <el-input v-model="switchSetting.title"></el-input>
+      </div>
+      <div class="item">
+        <span>尺寸：</span>
+        <el-select v-model="switchSetting.props.size" placeholder="请选择尺寸">
+          <el-option label="普通尺寸" value="medium" />
+          <el-option label="小尺寸" value="small" />
+          <el-option label="迷你" value="mini" />
+        </el-select>
+      </div>
+      <div class="item">
+        <span>字段名：</span>
+        <el-input v-model="switchSetting.field"></el-input>
+      </div>
+      <div class="item">
+        <span>禁用：</span>
+        <el-switch v-model="switchSetting.props.disabled"></el-switch>
+      </div>
+    </div>
   </div>
 </template>
 

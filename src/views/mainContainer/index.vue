@@ -2,6 +2,10 @@
   <div class="mainContainer">
     <header>
       <h4>基于vue的行政审批表单设计器</h4>
+      <el-button type="primary" title="导入JSON" @click="()=>{listdata=[],currentItem = {}} ">
+        <i class="el-icon-refresh-right"></i>
+      </el-button>
+
       <el-button type="primary" title="导入JSON" @click="showInjectJSON=true">
         <i class="el-icon-upload2"></i>
       </el-button>
@@ -28,6 +32,13 @@
                 </div>
               </transition-group>
             </draggable>
+            <h4>表单模板</h4>
+            <el-button class="formComponentButton">
+              <span class="dragTarget" @click="personClick">信息填报</span>
+            </el-button>
+            <el-button class="formComponentButton">
+              <span class="dragTarget">事务申请</span>
+            </el-button>
           </div>
         </div>
       </div>
@@ -138,7 +149,6 @@ import draggable from 'vuedraggable'
 import AttributeModificationArea from './attributeModificationArea/index'
 
 //表单组件
-import Fd_Cascader from '../../components/FormComponents/Cascader'
 import Fd_Checkbox from '../../components/FormComponents/Checkbox'
 import Fd_DatePicker from '../../components/FormComponents/DatePicker'
 import Fd_Switch from '../../components/FormComponents/Formswitch' // switch组件名与switch关键字冲突需要单独处理
@@ -170,7 +180,6 @@ export default {
         { name: '输入框', type: 'Fd_Input' },
         { name: '计数器', type: 'Fd_InputNumber' },
         { name: '选择器', type: 'Fd_Select' },
-        { name: '级联选择器', type: 'Fd_Cascader' },
         { name: '开关', type: 'Fd_Switch' },
         { name: '滑块', type: 'Fd_Slider' },
         { name: '时间选择', type: 'Fd_TimePicker' },
@@ -222,7 +231,6 @@ export default {
   components: {
     AttributeModificationArea,
     //表单组件
-    Fd_Cascader,
     Fd_Checkbox,
     Fd_Input,
     Fd_DatePicker,
@@ -432,6 +440,12 @@ export default {
         }
       })
       return temp
+    },
+    personClick() {
+      this.InjectJSONData =
+        '[[{"type":"Fd_Input","title":"姓名","field":"name","value":"","props":{"maxlength":"","placeholder":"请输入姓名","clearable":true,"disabled":false,"size":""},"name":"输入框","index":0,"col":{"span":12}},{"field":"sex","title":"性别","value":"","options":[{"label":"男","value":"10"},{"label":"女","value":"20"}],"props":{"disabled":false},"name":"单选框","type":"Fd_Radio","index":0,"innerIndex":1,"col":{"span":12}}],{"type":"Input","title":"年龄","field":"age","value":"","props":{"maxlength":"","placeholder":"","clearable":"","disabled":false,"size":""},"name":"输入框","index":1},{"type":"DatePicker","field":"section_day","title":"出生日期","value":"","props":{"format":"yyyy-MM-ddHH:mm:ss","placeholder":"请选择出生日期"},"name":"日期选择","index":2},{"type":"Checkbox","title":"职位","field":"hobby","value":[],"options":[{"label":"前端开发","value":"10"},{"label":"后端开发","value":"20"},{"label":"运维","value":3}],"props":{"size":"","disabled":false},"name":"多选框","index":3},{"type":"DatePicker","field":"section_daya","title":"入职时间","value":"","props":{"format":"yyyy-MM-ddHH:mm:ss","placeholder":"请选择入职日期","size":"mini"},"name":"日期选择","index":4}]'
+
+      this.injectJSON()
     }
   }
 }
@@ -655,7 +669,8 @@ export default {
   }
   /deep/.el-dialog__wrapper {
     .el-dialog {
-      max-height: 80%;
+      min-width: 80%;
+      min-height: fit-content;
       overflow: auto;
     }
     .resizeNone {

@@ -2,7 +2,13 @@
   <div class="Fd_InputNumber">
     <span>{{setting.title+'：'}}</span>
 
-    <el-input-number v-model="setting.value" :min="setting.props.min" :max="setting.props.max"></el-input-number>
+    <el-input-number
+      v-model="setting.value"
+      :min="setting.props.min"
+      :max="setting.props.max"
+      :step="setting.props.step"
+      :disabled="setting.props.disabled"
+    ></el-input-number>
   </div>
 </template>
 <script>
@@ -18,8 +24,7 @@ export default {
         props: {
           min: 0,
           max: 10,
-          step: '',
-          precision: '',
+          step: 1,
           disabled: '',
           size: ''
         }

@@ -1,13 +1,15 @@
 <template>
   <div class="TimePicker">
+    <span>{{setting.title+'：'}}</span>
     <el-time-select
-      v-model="value"
+      v-model="setting.value"
       :picker-options="{
         start: '08:30',
         step: '00:15',
         end: '18:30',
       }"
       placeholder="选择时间"
+      :disabled="setting.props.disabled"
     ></el-time-select>
   </div>
 </template>
@@ -15,15 +17,36 @@
 <script>
 export default {
   name: 'TimePicker',
+  props: ['currentOptions'],
   data() {
     return {
-      value: ''
+      setting: {
+        title: '请输入标题',
+        value: '',
+        props: {
+          isRange: false,
+          disabled: false,
+          size: ''
+        }
+      }
     }
   },
   components: {},
-  created() {},
-  mounted() {},
-  methods: {}
+  created() {
+    // 如果传进来的currentOptions中包含设置参数则将其赋值到setting
+    this.currentOptions.title && (this.setting = this.currentOptions)
+  },
+  methods: {},
+  watch: {
+    // 检查到currentOptions改变则立即赋值给setting
+    currentOptions: {
+      handler: function(oldValue, newValue) {
+        this.setting = newValue
+        this.$forceUpdate()
+      },
+      deep: true
+    }
+  }
 }
 </script>
 <style scoped>

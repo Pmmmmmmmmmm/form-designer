@@ -1,7 +1,7 @@
 <template>
   <div class="Radio">
     <span>{{setting.title+'：'}}</span>
-    <el-radio-group v-model="setting.value">
+    <el-radio-group v-model="setting.value" :disabled="setting.props.disabled">
       <el-radio v-for="(item, index) in setting.options" :key="index" :label="item.value">{{item.label}}</el-radio>
     </el-radio-group>
   </div>
@@ -19,7 +19,10 @@ export default {
           { label: '选项1', value: '10' },
           { label: '选项2', value: '20' }
         ],
-        value: '10'
+        value: '10',
+        props: {
+          disabled: false
+        }
       }
     }
   },

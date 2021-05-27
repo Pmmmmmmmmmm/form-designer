@@ -55,7 +55,7 @@
           </div>
           <div class="item">
             <span>是否禁用：</span>
-            <el-input v-model="selectSetting.props.disabled"></el-input>
+            <el-switch v-model="selectSetting.props.disabled"></el-switch>
           </div>
           <div class="item">
             <span>是否可以清空选项：</span>

@@ -1,6 +1,6 @@
 <template >
   <div class="datePicker-setting">
-    <!-- <el-tabs v-model="activeName" type="card">
+    <el-tabs v-model="activeName" type="card">
       <el-tab-pane label="通用设置" name="first">
         <div class="common">
           <div class="item">
@@ -10,7 +10,7 @@
           <div class="item">
             <span>尺寸：</span>
             <el-select v-model="datePickerSetting.props.size" placeholder="请选择尺寸">
-              <el-option label="普通尺寸" value="medium" />
+              <el-option label="普通尺寸" value="large" />
               <el-option label="小尺寸" value="small " />
               <el-option label="迷你" value="mini" />
             </el-select>
@@ -21,7 +21,7 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="时间选择器" name="second">
+      <el-tab-pane label="日期选择器" name="second">
         <div class="common">
           <div class="item">
             <span>完全只读：</span>
@@ -39,43 +39,13 @@
             <span>是否显示清除按钮</span>
             <el-switch v-model="datePickerSetting.props.clearable"></el-switch>
           </div>
-
           <div class="item">
-            <span>是否为时间范围选择</span>
-            <el-switch v-model="datePickerSetting.props.isRange"></el-switch>
-          </div>
-          <div class="item">
-            <span>选择范围时的分隔符</span>
-            <el-input v-model="datePickerSetting.props.rangeSeparator"></el-input>
+            <span>占位符</span>
+            <el-input v-model="datePickerSetting.props.placeholder"></el-input>
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="特有选项" name="third">
-        <div class="common">
-          <div class="item">
-            <span>开始时间</span>
-            <el-input v-model="datePickerSetting.props.pickerOptions.start"></el-input>
-          </div>
-          <div class="item">
-            <span>结束时间</span>
-            <el-input v-model="datePickerSetting.props.pickerOptions.end"></el-input>
-          </div>
-          <div class="item">
-            <span>间隔时间</span>
-            <el-input v-model="datePickerSetting.props.pickerOptions.step"></el-input>
-          </div>
-          <div class="item">
-            <span>最小时间，小于该时间的时间段将被禁用</span>
-            <el-input v-model="datePickerSetting.props.pickerOptions.mindate"></el-input>
-          </div>
-          <div class="item">
-            <span>最大时间，大于该时间的时间段将被禁用</span>
-            <el-input v-model="datePickerSetting.props.pickerOptions.maxdate"></el-input>
-          </div>
-        </div>
-      </el-tab-pane>
-    </el-tabs>-->
-    datePickeer
+    </el-tabs>
   </div>
 </template>
 
@@ -87,39 +57,13 @@ export default {
     return {
       activeName: 'first',
       datePickerSetting: {
-        type: 'FD_datePicker',
-        field: 'cate_id',
-        title: '请输入标题',
+        type: 'FD_DatePicker',
+        field: 'section_day',
+        title: '活动日期',
         value: '',
         props: {
-          // 完全只读
-          readonly: '',
-          // 禁用
-          disabled: '',
-          // 文本框可输入
-          editable: '',
-          // 是否显示清除按钮
-          clearable: '',
-          // 输入框尺寸
-          size: '',
-          // 是否为时间范围选择，仅对<el-date-picker>有效
-          isRange: '',
-
-          // 当前时间日期选择器特有的选项
-          pickerOptions: {
-            // 开始时间
-            start: '',
-            // 结束时间
-            end: '',
-            // 间隔时间
-            step: '',
-            // 最小时间，小于该时间的时间段将被禁用
-            mindate: '',
-            // 最大时间，大于该时间的时间段将被禁用
-            maxdate: ''
-          },
-          // 选择范围时的分隔符
-          rangeSeparator: ''
+          format: 'yyyy-MM-dd HH:mm:ss',
+          placeholder: '请选择活动日期'
         }
       }
     }

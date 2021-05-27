@@ -1,7 +1,7 @@
 <template>
   <div class="Checkbox">
     <span>{{setting.title+'：'}}</span>
-    <el-checkbox-group v-model="setting.value">
+    <el-checkbox-group v-model="setting.value" :disabled="setting.props.disabled">
       <el-checkbox v-for="(item, index) in setting.options" :key="index" :value="item.value" :label="item.label"></el-checkbox>
     </el-checkbox-group>
   </div>
@@ -19,7 +19,8 @@ export default {
           { label: '选项1', value: '22' },
           { label: '选项2', value: '11' }
         ],
-        value: []
+        value: [],
+        props: { disabled: false }
       }
     }
   },
