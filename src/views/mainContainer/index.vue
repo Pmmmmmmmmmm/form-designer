@@ -353,18 +353,82 @@ export default {
     },
     formatData(obj) {
       let temp = JSON.parse(JSON.stringify(obj))
+      for (let index = 0; index < temp.length; index++) {
+        if (Array.isArray(temp[index])) {
+          temp[index].forEach(el => {
+            el.col = {}
+            el.col.span = 24 / temp[index].length
+          })
+          temp.splice(index, 1, ...temp[index])
+        }
+      }
       temp.forEach(item => {
         if (item.type == 'Fd_Radio') {
           item.type = 'radio'
+        }
+        if (item.type == 'Fd_Cascader') {
+          item.type = 'Cascader'
+        }
+        if (item.type == 'Fd_Checkbox') {
+          item.type = 'Checkbox'
+        }
+        if (item.type == 'Fd_Input') {
+          item.type = 'Input'
+        }
+        if (item.type == 'Fd_DatePicker') {
+          item.type = 'DatePicker'
+        }
+        if (item.type == 'Fd_InputNumber') {
+          item.type = 'InputNumber'
+        }
+        if (item.type == 'Fd_TimePicker') {
+          item.type = 'TimePicker'
+        }
+        if (item.type == 'Fd_Switch') {
+          item.type = 'Switch'
+        }
+        if (item.type == 'Fd_Slider') {
+          item.type = 'Slider'
+        }
+        if (item.type == 'Fd_Select') {
+          item.type = 'Select'
         }
       })
       return temp
     },
     reverseFormatData(obj) {
       let temp = JSON.parse(JSON.stringify(obj))
+      5
       temp.forEach(item => {
         if (item.type == 'radio') {
           item.type = 'Fd_Radio'
+        }
+        if (item.type == 'Cascader') {
+          item.type = 'Fd_Cascader'
+        }
+        if (item.type == 'Checkbox') {
+          item.type = 'Fd_Checkbox'
+        }
+        if (item.type == 'Input') {
+          item.type = 'Fd_Input'
+        }
+        if (item.type == 'DatePicker') {
+          item.type = 'Fd_DatePicker'
+        }
+        if (item.type == 'InputNumber') {
+          item.type = 'Fd_InputNumber'
+        }
+        if (item.type == 'TimePicker') {
+          item.type = 'Fd_TimePicker'
+        }
+        if (item.type == 'Switch') {
+          item.type = 'Fd_Switch'
+        }
+        if (item.type == 'Slider') {
+          item.type = 'Fd_Slider'
+        }
+        if (item.type == 'Select') {
+          item.type = 'Fd_Select'
         }
       })
       return temp

@@ -28,7 +28,7 @@
       <el-tab-pane label="选项设置：" name="second">
         <div class="block"></div>
 
-        <!-- <ul class="cascader-options">
+        <ul class="cascader-options">
           <li>
             <el-button type="primary" icon="el-icon-plus" :disabled="cascaderSetting.options.length == 4" @click="addOptions"></el-button>
           </li>
@@ -52,7 +52,7 @@
               </div>
             </div>
           </li>
-        </ul>-->
+        </ul>
       </el-tab-pane>
       <el-tab-pane label="下拉框设置" name="third">
         <div class="common">
