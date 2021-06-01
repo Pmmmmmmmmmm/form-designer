@@ -9,16 +9,13 @@ export default {
   data() {
     return {
       fapi: null,
-      rule: formCreate.parseJson(
-        '[{"type":"input","title":"col24","field":"col24_1"},{"type":"input","title":"col24","field":"col242_1","col":{"span":12}},{"type":"input","title":"col24","field":"col2342_1","col":{"span":12}}]'
-      ),
+      rule: '',
       option: formCreate.parseJson(
         '{"form":{"labelPosition":"right","size":"mini","labelWidth":"125px","hideRequiredAsterisk":false,"showMessage":true,"inlineMessage":false}}'
       )
     }
   },
   created() {
-    console.log(this.listdata)
     this.rule = formCreate.parseJson(JSON.stringify(this.formatData(this.listdata)))
   },
   methods: {

@@ -51,7 +51,7 @@
         <div class="common">
           <div class="item">
             <span>是否多选：</span>
-            <el-input v-model="selectSetting.props.multiple"></el-input>
+            <el-switch v-model="selectSetting.props.multiple"></el-switch>
           </div>
           <div class="item">
             <span>是否禁用：</span>
@@ -59,7 +59,7 @@
           </div>
           <div class="item">
             <span>是否可以清空选项：</span>
-            <el-input v-model="selectSetting.props.clearable"></el-input>
+            <el-switch v-model="selectSetting.props.clearable"></el-switch>
           </div>
           <div class="item">
             <span>占位符：</span>
@@ -88,8 +88,8 @@ export default {
           { value: '105', label: '新鲜水果' }
         ],
         props: {
-          disabled: '',
-          multiple: '',
+          disabled: false,
+          multiple: false,
           size: '',
           clearable: '',
           placeholder: ''

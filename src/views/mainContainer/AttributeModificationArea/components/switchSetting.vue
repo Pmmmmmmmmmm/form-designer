@@ -38,6 +38,8 @@ export default {
         field: 'is_postage',
         value: true,
         props: {
+          disabled: false,
+
           size: ''
         }
       }

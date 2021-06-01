@@ -34,10 +34,10 @@
             </draggable>
             <h4>表单模板</h4>
             <el-button class="formComponentButton">
-              <span class="dragTarget" @click="personClick">信息填报</span>
+              <span class="dragTarget" @click="personClick(1)">事务申请</span>
             </el-button>
             <el-button class="formComponentButton">
-              <span class="dragTarget">事务申请</span>
+              <span class="dragTarget" @click="personClick(2)">信息填报</span>
             </el-button>
           </div>
         </div>
@@ -441,11 +441,14 @@ export default {
       })
       return temp
     },
-    personClick() {
+    personClick(flag) {
       this.InjectJSONData =
-        '[[{"type":"Fd_Input","title":"姓名","field":"name","value":"","props":{"maxlength":"","placeholder":"请输入姓名","clearable":true,"disabled":false,"size":""},"name":"输入框","index":0,"col":{"span":12}},{"field":"sex","title":"性别","value":"","options":[{"label":"男","value":"10"},{"label":"女","value":"20"}],"props":{"disabled":false},"name":"单选框","type":"Fd_Radio","index":0,"innerIndex":1,"col":{"span":12}}],{"type":"Input","title":"年龄","field":"age","value":"","props":{"maxlength":"","placeholder":"","clearable":"","disabled":false,"size":""},"name":"输入框","index":1},{"type":"DatePicker","field":"section_day","title":"出生日期","value":"","props":{"format":"yyyy-MM-ddHH:mm:ss","placeholder":"请选择出生日期"},"name":"日期选择","index":2},{"type":"Checkbox","title":"职位","field":"hobby","value":[],"options":[{"label":"前端开发","value":"10"},{"label":"后端开发","value":"20"},{"label":"运维","value":3}],"props":{"size":"","disabled":false},"name":"多选框","index":3},{"type":"DatePicker","field":"section_daya","title":"入职时间","value":"","props":{"format":"yyyy-MM-ddHH:mm:ss","placeholder":"请选择入职日期","size":"mini"},"name":"日期选择","index":4}]'
+        flag == 1
+          ? '[{"field":"cate_id2","title":"事务类型","value":"","options":[{"label":"个人事务","value":"10"},{"label":"公共事务","value":"20"}],"props":{"disabled":false},"name":"单选框","type":"radio","index":0},{"type":"Input","title":"活动名称","field":"is_postagec","value":"","props":{"maxlength":"","placeholder":"请输入","clearable":"","disabled":false,"size":""},"name":"输入框","index":1},{"type":"Select","field":"city","title":"城市","value":"","options":[{"value":"104","label":"天津"},{"value":"105","label":"北京"},{"value":"value3","label":"上海"}],"props":{"disabled":false,"multiple":false,"size":"","clearable":"","placeholder":""},"name":"选择器","index":2},[{"type":"Fd_DatePicker","field":"section_days","title":"开始日期","value":"","props":{"placeholder":"请选择活动日期"},"name":"日期选择","index":2,"innerIndex":0},{"type":"Fd_DatePicker","field":"sectiozn_day","title":"结束日期","value":"","props":{"placeholder":"请选择活动日期"},"name":"日期选择","index":2,"innerIndex":1}],{"type":"Input","title":"地点","field":"is_postaged","value":"","props":{"maxlength":"","placeholder":"请输入地点","clearable":"","disabled":false,"size":""},"name":"输入框","index":4},{"type":"Input","title":"申请人","field":"is_postages","value":"","props":{"maxlength":"","placeholder":"请输入","clearable":"","disabled":false,"size":""},"name":"输入框","index":4},{"type":"Input","title":"联系方式","field":"phone","value":"","props":{"maxlength":"","placeholder":"请输入","clearable":"","disabled":false,"size":""},"name":"输入框","index":5},{"type":"Input","title":"申请理由","field":"is_postagez","value":"","props":{"maxlength":"","placeholder":"请输入","clearable":"","disabled":false,"size":""},"name":"输入框","index":4}]'
+          : '[[{"type":"Fd_Input","title":"姓名","field":"name","value":"","props":{"maxlength":"","placeholder":"请输入姓名","clearable":true,"disabled":false,"size":""},"name":"输入框","index":0,"col":{"span":12}},{"field":"sex","title":"性别","value":"","options":[{"label":"男","value":"10"},{"label":"女","value":"20"}],"props":{"disabled":false},"name":"单选框","type":"Fd_Radio","index":0,"innerIndex":1,"col":{"span":12}}],{"type":"Input","title":"年龄","field":"age","value":"","props":{"maxlength":"","placeholder":"","clearable":"","disabled":false,"size":""},"name":"输入框","index":1},{"type":"DatePicker","field":"section_day","title":"出生日期","value":"","props":{"placeholder":"请选择出生日期"},"name":"日期选择","index":2},{"type":"Checkbox","title":"职位","field":"hobby","value":[],"options":[{"label":"前端开发","value":"10"},{"label":"后端开发","value":"20"},{"label":"运维","value":3}],"props":{"size":"","disabled":false},"name":"多选框","index":3},{"type":"Select","field":"ssqzx","title":"学历","value":"","options":[{"value":"104","label":"大专"},{"value":"105","label":"本科"},{"value":"value3","label":"硕士"},{"value":"value4","label":"博士"}],"props":{"disabled":false,"multiple":false,"size":"","clearable":"","placeholder":""},"name":"选择器","index":4},{"type":"DatePicker","field":"section_daya","title":"入职时间","value":"","props":{"placeholder":"请选择入职日期","size":"mini"},"name":"日期选择","index":4}]'
 
       this.injectJSON()
+      this.$forceUpdate()
     }
   }
 }
@@ -669,7 +672,7 @@ export default {
   }
   /deep/.el-dialog__wrapper {
     .el-dialog {
-      min-width: 80%;
+      min-width: 60%;
       min-height: fit-content;
       overflow: auto;
     }

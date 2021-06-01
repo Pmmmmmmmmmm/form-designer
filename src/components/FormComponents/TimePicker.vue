@@ -3,11 +3,7 @@
     <span>{{setting.title+'：'}}</span>
     <el-time-select
       v-model="setting.value"
-      :picker-options="{
-        start: '08:30',
-        step: '00:15',
-        end: '18:30',
-      }"
+      :picker-options="setting.props.pickerOptions"
       placeholder="选择时间"
       :disabled="setting.props.disabled"
     ></el-time-select>

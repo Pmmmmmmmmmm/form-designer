@@ -61,7 +61,7 @@ export default {
           { label: '选项2', value: '20' }
         ],
         props: {
-          disabled: ''
+          disabled: false
         }
       }
     }

@@ -55,9 +55,7 @@ export default {
         title: '活动日期',
         value: ['2018-02-20', '2021-02-15'],
         props: {
-          type: 'datetimerange',
-          format: 'yyyy-MM-dd HH:mm:ss',
-          placeholder: '请选择活动日期'
+          placeholder: '请选择日期'
         }
       }
     }

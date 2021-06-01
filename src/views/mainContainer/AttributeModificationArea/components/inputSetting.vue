@@ -61,7 +61,7 @@ export default {
           maxlength: '',
           placeholder: '',
           clearable: '',
-          disabled: '',
+          disabled: false,
           size: ''
         }
       }

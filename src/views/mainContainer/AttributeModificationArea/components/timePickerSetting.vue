@@ -70,7 +70,7 @@
             ></el-time-select>
           </div>
           <div class="item">
-            <span>最小时间，小于该时间的时间段将被禁用</span>
+            <span>最小时间(小于该时间的时间段将被禁用)</span>
             <el-time-select
               v-model="timePickerSetting.props.pickerOptions.minTime"
               :picker-options="{
@@ -81,7 +81,7 @@
             ></el-time-select>
           </div>
           <div class="item">
-            <span>最大时间，大于该时间的时间段将被禁用</span>
+            <span>最大时间(大于该时间的时间段将被禁用)</span>
             <el-time-select
               v-model="timePickerSetting.props.pickerOptions.maxTime"
               :picker-options="{
@@ -111,7 +111,8 @@ export default {
         value: '',
         props: {
           // 禁用
-          disabled: '',
+          disabled: false,
+
           //  是否显示清除按钮
           clearable: '',
           // 输入框尺寸

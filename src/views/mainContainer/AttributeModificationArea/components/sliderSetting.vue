@@ -60,7 +60,7 @@ export default {
         props: {
           //   min: 0,
           //   max: 100,
-          disabled: '',
+          disabled: false,
           step: 10
           //   range: false,
 

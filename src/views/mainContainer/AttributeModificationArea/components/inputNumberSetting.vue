@@ -66,7 +66,7 @@ export default {
           max: 10,
           step: 1,
 
-          disabled: '',
+          disabled: false,
           size: ''
         }
       }

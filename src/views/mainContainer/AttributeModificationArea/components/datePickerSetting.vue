@@ -24,10 +24,6 @@
       <el-tab-pane label="日期选择器" name="second">
         <div class="common">
           <div class="item">
-            <span>完全只读：</span>
-            <el-switch v-model="datePickerSetting.props.readonly"></el-switch>
-          </div>
-          <div class="item">
             <span>禁用</span>
             <el-switch v-model="datePickerSetting.props.disabled"></el-switch>
           </div>
@@ -62,7 +58,6 @@ export default {
         title: '活动日期',
         value: '',
         props: {
-          format: 'yyyy-MM-dd HH:mm:ss',
           placeholder: '请选择活动日期'
         }
       }
