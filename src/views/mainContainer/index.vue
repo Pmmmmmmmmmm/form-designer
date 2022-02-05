@@ -146,7 +146,7 @@
 // 引入主体的三块区域
 
 import draggable from 'vuedraggable'
-import AttributeModificationArea from './attributeModificationArea/index'
+import AttributeModificationArea from '../mainContainer/AttributeModificationArea/index'
 
 //表单组件
 import Fd_Checkbox from '../../components/FormComponents/Checkbox'
